@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition >
+
+            <h:form id="contenidoAvisos">               
+                <p:messages showSummary="true" showDetail="false" showIcon="true" closable="true"/>
+                <p:selectOneMenu value="#{avisosBean.idSucursaSeleccionada}"
+                                 style="width: 400px"
+                                 valueChangeListener="#{avisosBean.valueChangeSucursal}"
+                                 >
+                    <f:ajax execute="@this" render="@form"/>
+                    <f:selectItems value="#{avisosBean.listaSucursalItems}"
+                                   />
+                </p:selectOneMenu>   
+                <p:commandLink value="actualizar" 
+                               action="#{avisosBean.cargarAvisos()}"
+                               update="@form"
+                               />
+                <div class="timeline-centered">
+                    <ui:repeat value="#{avisosBean.listaAvisos}"
+                               var="aviso">
+
+                        <article class="timeline-entry">
+
+                            <div class="timeline-entry-inner">
+
+                                <div class="timeline-icon bg-info">
+                                    <i class="entypo-feather"></i>
+                                </div>
+
+                                <div class="timeline-label">
+                                    <h2>
+                                        <h:outputLabel value="#{aviso.usuario.nombre}"/>
+                                        <a href="#">#{aviso.titulo}</a> 
+                                        <span>
+                                            <h:outputText value="#{aviso.fecha}">
+                                                <f:convertDateTime dateStyle="short" type="date"/>
+                                            </h:outputText>
+                                            a las 
+                                            <h:outputText value="#{aviso.hora}">
+                                                <f:convertDateTime dateStyle="short" type="time"/>
+                                            </h:outputText>
+                                        </span>
+                                    </h2>
+                                    <p>
+                                        #{aviso.descripcion}
+                                    </p>
+                                    <div class="row bg-warning">
+                                        <p:commandLink value="Comentar" 
+                                                       actionListener="#{avisosBean.iniciarNuevoComentario(event)}"
+                                                       oncomplete="PF('popupComentario').show();"
+                                                       update=":formCrudComentario"
+                                                       styleClass="btn btn-link">
+                                            <f:param name="idAviso" value="#{aviso.id}"/>
+                                        </p:commandLink>
+
+                                        <!-- comentarios -->
+                                        <ui:repeat value="#{avisosBean.cargarComentarios(aviso.id)}"
+                                                   var="comentario">
+
+                                            <article class="timeline-entry">
+
+                                                <div class="timeline-entry-inner">
+
+                                                    <div class="timeline-icon bg-success">
+                                                        <i class="entypo-feather"></i>
+                                                    </div>
+
+                                                    <div class="timeline-label">
+                                                        <h2>  
+                                                            <h:outputLabel value="#{comentario.titulo}"/>                                                          
+                                                            <span>
+                                                                <h:outputText value="#{comentario.fecha}">
+                                                                    <f:convertDateTime dateStyle="short" type="date"/>
+                                                                </h:outputText>
+                                                                a las 
+                                                                <h:outputText value="#{comentario.hora}">
+                                                                    <f:convertDateTime dateStyle="short" type="time"/>
+                                                                </h:outputText>
+                                                            </span>
+                                                        </h2>
+                                                        <p>
+                                                            #{comentario.comentario}
+                                                        </p>                                                        
+                                                    </div>
+                                                </div>
+
+                                            </article>
+
+                                        </ui:repeat>
+                                        <!-- Fin comentarios -->
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+
+                    </ui:repeat>
+                </div>
+            </h:form>
+
+
+            <h:form id="formCrudComentario">
+                <p:growl id="messages" showDetail="true" />
+                <p:dialog header="Capturar formato para envio" 
+                          widgetVar="popupComentario" 
+                          modal="true"
+                          resizable="false"
+                          draggable="false"
+                          minHeight="40">
+                    <span>Comentario</span>
+                    <h:panelGrid>
+                        <h:outputText value="#{avisosBean.avisoSeleccionado.usuario.nombre}"/>                        
+                        <h:outputText value="#{avisosBean.avisoSeleccionado.titulo}"/>                                                
+                        <hr/>
+                        <h:outputLabel value="Nombre "/>
+                        <p:inputText value="#{avisosBean.comentario.titulo}"
+                                     required="true"
+                                     requiredMessage="* Escribe tu nombre"
+                                     />
+                        
+                        <h:outputLabel value="Escribe el comentario"/>
+                        <p:inputTextarea value="#{avisosBean.comentario.comentario}"
+                                         required="true"
+                                         requiredMessage="Por favor escribe algun comentario.."
+                                         placeholder="Comentarios.."
+                                         cols="45"
+                                         rows="6"
+                                         >
+
+                        </p:inputTextarea>
+
+                    </h:panelGrid>
+                    <div class="row text-center">                            
+                        <p:commandLink value="Guardar"
+                                       actionListener="#{avisosBean.guardarNuevoComentario(event)}"
+                                       styleClass="btn btn-primary btn-lg"
+                                       update=":contenido"                                           
+                                       process="@form,:contenidoAvisos"
+                                       oncomplete="PF('popupComentario').hide();"
+                                       />     
+                        <p:commandLink  
+                            process="@form"
+                            styleClass="btn btn-default btn-lg"
+                            update=":contenido"
+                            onclick="PF('popupComentario').hide();"
+                            value="Cancelar"/>
+
+                    </div>
+                </p:dialog>
+            </h:form>
+
+        </ui:composition>
+
+    </body>
+</html>

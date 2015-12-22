@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition>
+            <h:form id="formMenuLateral">
+                <ul class="list-group">
+                    <li class="list-group-item active">
+                           <p:commandLink value="Principal"
+                                       action="principal.xhtml"
+                                       update="@all"
+                                       ></p:commandLink>
+                        
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge label-warning">#{formatoRequestBean.totalFormatosDevueltos}D</span>                     
+                        <span class="badge label-success">#{formatoRequestBean.totalFormatosPendientes}P</span>                     
+                        <p:commandLink value="Bandejar de captura"
+                                       action="vistas/bandejaCapturista.xhtml"
+                                       ></p:commandLink>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">14</span>                     
+                        <p:commandLink value="Bandejar de entrada"
+                                       action="./vistas/bandejaCapturista.xhtml"
+                                       ></p:commandLink>
+                    </li>
+                </ul>
+            </h:form>
+        </ui:composition>
+
+    </body>
+</html>

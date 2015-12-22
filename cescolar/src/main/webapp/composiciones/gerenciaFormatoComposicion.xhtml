@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition >
+
+            <h:form id="contenidoGerenciaFormato">               
+                <p:messages showSummary="true" showDetail="false" showIcon="true" closable="true"/>
+                <h:outputLabel value="Seleccione la gerencia: "/>
+                <br/>
+                <p:selectOneMenu id="listaGerenciacCombo" 
+                                 value="#{gerenciaBean.idGerenciaSeleccionado}"
+                                 valueChangeListener="#{gerenciaBean.valueChangeGerencia}"                                 
+                                 styleClass="col-4"
+                                 >
+                    <p:ajax update="@form"
+                            process="@this"
+                            />
+                    <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                    <f:selectItems value="#{gerenciaBean.listaGerenciaItems}"
+                                   />
+                </p:selectOneMenu>
+                <p:commandLink styleClass="glyphicon glyphicon-refresh"
+                               action="#{gerenciaBean.cargarGerenciasCombo()}"
+                               update="listaGerenciacCombo"
+                               >
+
+                </p:commandLink>
+
+                <div class="well">
+                    <p:commandLink value="Agregar Formato"
+                                   actionListener="#{gerenciaBean.preprarNuevo(event)}"
+                                   update="@this,:formCrudFormato"
+                                   oncomplete="PF('popupAddFormato').show();"
+                                   rendered="#{not empty gerenciaBean.gerencia}"
+                                   styleClass="btn btn-primary btn-lg"
+                                   />
+                </div>
+                <p:dataTable id="listaFormatos"
+                             var="data" 
+                             value="#{gerenciaBean.listaRelaciones}"
+                             rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             emptyMessage="Sin registros de formatos"
+                             rowsPerPageTemplate="5,10,15">
+
+                    <p:column headerText="Formato">
+                        <ui:fragment rendered="#{not empty data.adjunto}">
+                            <div class="text-center">
+                                <ui:include src="../imgTipoArchivo.xhtml"
+                                            >
+                                    <ui:param name="paramElemento" value="#{data.adjunto}"/>
+                                </ui:include>
+                                <br/>
+                                <h:outputText value="#{data.adjunto.nombre}" 
+                                              styleClass="label label-default"/>                            
+                                <br/>
+                                <p:commandLink styleClass="btn btn-warning glyphicon glyphicon-eye-open" 
+                                               title="Ver archivo"/>                                
+                                <p:commandLink styleClass="btn btn-default glyphicon glyphicon-download-alt"
+                                               title="Descargar archivo"
+                                               />
+
+                            </div>
+                        </ui:fragment>
+                    </p:column>
+
+                    <p:column headerText="Gerencia">
+                        <h:outputText value="#{data.gerencia.nombre}" >
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Aprueba">
+                        <h:outputText value="#{data.gerencia.usuarioGerente.nombre}" >
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{data.descripcion}" />                                                    
+                    </p:column>
+
+                    <p:column >
+                        <p:commandLink value="Modificar"
+                                       actionListener="#{gerenciaBean.prepararModificacion(even)}"
+                                       update="@this,:formCrudFormato"
+                                       oncomplete="PF('popupAddFormato').show();"                                       
+                                       styleClass="btn btn-link"
+                                       >
+                            <f:param name="idRelacion" value="#{data.id}"/>
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column >
+                        <p:commandLink value="Eliminar"
+                                       actionListener="#{gerenciaBean.prepararEliminacion(even)}"
+                                       update="@this,:formCrudFormato"
+                                       oncomplete="PF('popupEliminarFormato').show();"                                       
+                                       styleClass="btn btn-link"
+                                       >
+
+                            <f:param name="idRelacion" value="#{data.id}"/>
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column >
+                        <p:commandLink value="Detalle">
+                            <f:param name="idRelacion" value="#{data.id}"/>
+                        </p:commandLink>
+
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+
+            <h:form enctype="multipart/form-data"  id="formCrudFormato">
+                <p:growl id="messagesUp" showDetail="true" />
+                <p:dialog header="Capturar formato para la gerencia" 
+                          widgetVar="popupAddFormato" 
+                          modal="true"
+                          resizable="false"
+                          draggable="false"
+                          minHeight="40">
+                    <span>Agregar nuevo formatos a la gerencia #{gerenciaBean.gerencia.nombre}</span>
+                    <h:panelGrid>
+
+                        <ui:fragment rendered="#{gerenciaBean.operacionesEnum.id eq 1}">
+                            <h:outputLabel value="Formato"/>                        
+                            <p:fileUpload fileUploadListener="#{gerenciaBean.uploadAttachment}" 
+                                          mode="advanced" 
+                                          dragDropSupport="false"
+                                          uploadLabel="Subir" 
+                                          cancelLabel="Cancelar" 
+                                          label="Seleccionar.."  
+                                          process=":contenidoGerenciaFormato"
+                                          update="messagesUp,:contenidoGerenciaFormato" 
+                                          sizeLimit="1000000" 
+                                          invalidFileMessage="El archivo es invalido..."
+                                          invalidSizeMessage="El archivo es muy pesado.."
+                                          previewWidth="300"
+                                          allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|gif|jpe?g|png)$/" />
+
+                        </ui:fragment>
+                        <ui:fragment rendered="#{gerenciaBean.operacionesEnum.id eq 2}">
+                            <ui:include src="../imgTipoArchivo.xhtml">
+                                <ui:param name="paramElemento" value="#{gerenciaBean.gerenciaFormato.adjunto}"/>
+                            </ui:include>
+                        </ui:fragment>
+
+                        <h:outputLabel value="Comentarios"/>
+                        <p:inputTextarea value="#{gerenciaBean.gerenciaFormato.descripcion}"
+                                         required="true"
+                                         requiredMessage="Por favor escribe algun comentario.."
+                                         placeholder="Comentarios.."
+                                         cols="60"
+                                         rows="6"
+                                         styleClass="form-control"
+                                         >
+                        </p:inputTextarea>
+
+                    </h:panelGrid>
+                    <div class="row text-center">                            
+                        <p:commandLink value="Guardar"
+                                       actionListener="#{gerenciaBean.guardarRelacionGerenciaFormato(event)}"
+                                       styleClass="btn btn-primary btn-lg"
+                                       update=":contenidoGerenciaUsuario"                                           
+                                       process="@form,:contenidoGerenciaUsuario"
+                                       oncomplete="PF('popupAddFormato').hide();"
+                                       />     
+                        <p:commandLink  
+                            process="@form"
+                            styleClass="btn btn-default btn-lg"
+                            update=":contenidoGerenciaUsuario"
+                            onclick="PF('popupAddFormato').hide();"
+                            value="Cancelar"/>
+
+                    </div>
+                </p:dialog>
+            </h:form>
+
+
+            <h:form id="formEliminarFormato">
+                <p:dialog header="Eliminar" 
+                          widgetVar="popupEliminarFormato" 
+                          modal="true"
+                          resizable="false"
+                          draggable="false"
+                          minWidth="150"
+                          minHeight="40">                    
+                    <h:panelGrid>      
+                        <h:outputLabel value="Esta seguro de eliminar la gerencia #{gerenciaResponsableBean.gerencia.nombre}????"/>                                                   
+                    </h:panelGrid>
+                    <div class="row text-center">                            
+                        <p:commandLink value="Eliminar"
+                                       actionListener="#{gerenciaBean.eliminar(ev)}"
+                                       styleClass="btn btn-danger btn-lg"
+                                       update=":contenidoGerenciaFormato"                                           
+                                       process="@form,:contenidoGerenciaFormato"
+                                       oncomplete="PF('popupCrudGerencia').hide();"
+                                       />     
+                        <p:commandLink                              
+                            styleClass="btn btn-default btn-lg"
+                            update=":contenidoGerenciaFormato"
+                            onclick="PF('popupCrudGerencia').hide();"
+                            value="Cancelar"/>
+
+                    </div>
+                </p:dialog>
+            </h:form>
+
+        </ui:composition>
+
+    </body>
+</html>

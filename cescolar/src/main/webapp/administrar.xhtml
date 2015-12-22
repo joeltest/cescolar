@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
+
+            <ui:define name="header">
+                <h3>Administrar sistema</h3>
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form id="formArbol" prependId="true">
+                    <p:growl id="msgs" showDetail="true" escape="false"/>
+                    <h3 >Menú</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li role="presentation" ><a href="#">Administrar Usuarios</a></li>
+                    </ul>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="content">
+                
+                <h:form id="contenido">
+                    <p:commandLink value="Nuevo"
+                                   actionListener="#{usuarioBean.prepararNuevo(event)}"
+                                   process="@this"
+                                   update=":formUsuario"
+                                   oncomplete="PF('popupCrud').show();"
+                                   />
+                    
+                    <p:dataTable var="data" value="#{usuarioBean.listaUsuarios}">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{data.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Year">
+                            <h:outputText value="#{data.correo}" />
+                        </p:column>
+
+                        <p:column headerText="Brand">
+                            <h:outputText value="#{data.tipoUsuario.nombre}" />
+                        </p:column>
+
+                        <p:column >
+                            <p:commandLink value="Modificar"
+                                           action="#{usuarioBean.prepararModificacion(usuario)}"
+                                           
+                                           />
+                        </p:column>
+
+                        <p:column >
+                            <p:commandLink value="Eliminar"
+                                           action="#{usuarioBean.prepararEliminacion(usuario)}"
+
+                                           />
+                        </p:column>
+
+                        <p:column >
+                            <p:commandLink value="Ver"
+                                           action="#{usuarioBean.seleccionar(usuario)}"
+
+                                           />
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+
+
+                <h:form id="formUsuario">
+                    <p:growl id="messages" showDetail="true" />
+                    <p:dialog header="Usuario" 
+                              widgetVar="popupCrud" 
+                              modal="true"
+                              resizable="false"
+                              draggable="false"
+                              minHeight="40">
+                        <span>Compartir con :</span>
+                        <h:panelGrid>
+                            <p:inputText value="#{usuarioBean.usuarioSeleccionado.nombre}"
+                                         required="True"
+                                         requiredMessage="Ingresa el nombre"
+                                         placeholder="Nombre..."
+                                         />
+                            <p:inputText value="#{usuarioBean.usuarioSeleccionado.correo}"
+                                         required="True"
+                                         requiredMessage="Ingresa el correo"
+                                         placeholder="Correo..."
+                                         />
+                            <p:inputText value="#{usuarioBean.usuarioSeleccionado.clave}"
+                                         required="True"
+                                         requiredMessage="Ingresa la clave"
+                                         placeholder="Clave.."
+                                         />
+
+                        </h:panelGrid>
+                        <div class="row text-center">                            
+                            <p:commandLink value="Guardar"
+                                           styleClass="btn btn-primary btn-lg"
+                                           actionListener="#{usuarioBean.guardar(event)}"
+                                           update=":contenido"                                           
+                                           process="@form,:contenido"
+                                           oncomplete="PF('popupCompartir').hide();"
+                                           />     
+                            <p:commandLink  
+                                process="@form"
+                                styleClass="btn btn-default btn-lg"
+                                update=":contenido"
+                                onclick="PF('popupCrud').hide();"
+                                value="Cancelar"/>
+
+                        </div>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
