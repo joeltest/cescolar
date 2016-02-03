@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition>
+
+            <div id="space"></div>
+            <div class="container">
+                <section class="row">
+                    <div class="col col-md-3">
+                        <article class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="profile">
+                                <img src="http://placehold.it/150x150" alt="..." class="img-circle"/>
+                                <p>#{sesion.alumno.nombre}</p>
+                                <p>#{sesion.alumno.numeroControl}</p>
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item active"><p:commandLink value="Cardex"></p:commandLink></li>
+                                <li class="list-group-item"><p:commandLink value="Materias"></p:commandLink></li>
+                                <li class="list-group-item"><p:commandLink value="Editar mi perfil"></p:commandLink></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="col col-md-9">
+                        <ui:insert name="contenido">
+                            
+                        </ui:insert>
+                    </div>
+                </section>
+            </div>
+
+            <style>
+                .profile {
+                    background-color: #FF766C;
+                    border: 1px solid #ff766c;
+                }
+
+                .profile img {
+                    display: block;
+                    border: 10px solid rgba(255, 255, 255, 0.3);
+                    margin: 0 auto;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+                .profile p {
+                    text-align: center;
+                    color: #fff;
+                }
+
+                .list-group-item {
+                    background-color: #fff;
+                    border-radius: 0px !important;
+                    border: 1px solid #DDD;
+                }
+
+                .list-group-item.active, .list-group-item:hover {
+                    border-left: 3px solid #FF766C;
+                    background-color: #F8F7F5;
+                }
+
+                /*Ignore this tag. It is to give space.*/
+                #space {padding: 10px;}
+            </style>
+        </ui:composition>
+
+    </body>
+</html>

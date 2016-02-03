@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- plantilla diseñada para mostrar bloques de ejemplo de codigo  -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <title>Facelets Template</title>
+    </h:head>
+
+    <h:body>
+        <script>
+            <![CDATA[
+                    /**
+                     * FloatLabels
+                     * Version: 1.0
+                     * URL: http://clubdesign.github.io/floatlabels.js/
+                     * Description: 
+                     * Author: Marcus Pohorely ( http://www.clubdesign.at )
+                     * Copyright: Copyright 2013 / 2014 http://www.clubdesign.at
+                     */
+                    !function (a, b) {
+                        function g(b, c) {
+                            this.$element = a(b), this.settings = a.extend({}, f, c), this.init()
+                        }
+                        var e = "floatlabel", f = {slideInput: !0, labelStartTop: "20px", labelEndTop: "10px", paddingOffset: "10px", transitionDuration: .3, transitionEasing: "ease-in-out", labelClass: "", typeMatches: /text|password|email|number|search|url/};
+                        g.prototype = {init: function () {
+                                var a = this, c = this.settings, d = c.transitionDuration, e = c.transitionEasing, f = this.$element, g = {"-webkit-transition": "all " + d + "s " + e, "-moz-transition": "all " + d + "s " + e, "-o-transition": "all " + d + "s " + e, "-ms-transition": "all " + d + "s " + e, transition: "all " + d + "s " + e};
+                                if ("INPUT" === f.prop("tagName").toUpperCase() && c.typeMatches.test(f.attr("type"))) {
+                                    var h = f.attr("id");
+                                    h || (h = Math.floor(100 * Math.random()) + 1, f.attr("id", h));
+                                    var i = f.attr("placeholder"), j = f.data("label"), k = f.data("class");
+                                    k || (k = ""), i && "" !== i || (i = "You forgot to add placeholder attribute!"), j && "" !== j || (j = i), this.inputPaddingTop = parseFloat(f.css("padding-top")) + parseFloat(c.paddingOffset), f.wrap('<div class="floatlabel-wrapper" style="position:relative"></div>'), f.before('<label for="' + h + '" class="label-floatlabel ' + c.labelClass + " " + k + '">' + j + "</label>"), this.$label = f.prev("label"), this.$label.css({position: "absolute", top: c.labelStartTop, left: f.css("padding-left"), display: "none", "-moz-opacity": "0", "-khtml-opacity": "0", "-webkit-opacity": "0", opacity: "0"}), c.slideInput || f.css({"padding-top": this.inputPaddingTop}), f.on("keyup blur change", function (b) {
+                                        a.checkValue(b)
+                                    }), b.setTimeout(function () {
+                                        a.$label.css(g), a.$element.css(g)
+                                    }, 100), this.checkValue()
+                                }
+                            }, checkValue: function (a) {
+                                if (a) {
+                                    var b = a.keyCode || a.which;
+                                    if (9 === b)
+                                        return
+                                }
+                                var c = this.$element, d = c.data("flout");
+                                "" !== c.val() && c.data("flout", "1"), "" === c.val() && c.data("flout", "0"), "1" === c.data("flout") && "1" !== d && this.showLabel(), "0" === c.data("flout") && "0" !== d && this.hideLabel()
+                            }, showLabel: function () {
+                                var a = this;
+                                a.$label.css({display: "block"}), b.setTimeout(function () {
+                                    a.$label.css({top: a.settings.labelEndTop, "-moz-opacity": "1", "-khtml-opacity": "1", "-webkit-opacity": "1", opacity: "1"}), a.settings.slideInput && a.$element.css({"padding-top": a.inputPaddingTop}), a.$element.addClass("active-floatlabel")
+                                }, 50)
+                            }, hideLabel: function () {
+                                var a = this;
+                                a.$label.css({top: a.settings.labelStartTop, "-moz-opacity": "0", "-khtml-opacity": "0", "-webkit-opacity": "0", opacity: "0"}), a.settings.slideInput && a.$element.css({"padding-top": parseFloat(a.inputPaddingTop) - parseFloat(this.settings.paddingOffset)}), a.$element.removeClass("active-floatlabel"), b.setTimeout(function () {
+                                    a.$label.css({display: "none"})
+                                }, 1e3 * a.settings.transitionDuration)
+                            }}, a.fn[e] = function (b) {
+                            return this.each(function () {
+                                a.data(this, "plugin_" + e) || a.data(this, "plugin_" + e, new g(this, b))
+                            })
+                        }
+                    }(jQuery, window, document);
+            $(document).ready(function () {
+                $('.form-control').floatlabel({
+                    labelClass: 'float-label',
+                    labelEndTop: 5
+                });
+            });
+            ]]>
+        </script>
+        <style>
+            <![CDATA[
+
+            body {
+                background-color:#F7F7F7;
+                font-family: 'Open Sans', sans-serif;
+            }
+            /*Navbar*/
+            .navbar-default {
+                background-color:#fff;
+                border-bottom-color:#E3E3E3;
+            }
+            .navbar-default .navbar-nav>.active>a, 
+            .navbar-default .navbar-nav>.active>a:hover, 
+            .navbar-default .navbar-nav>.active>a:focus{
+                background-color:transparent!important;
+            }
+            .navbar-default .btn-compose {
+                padding-right:10px;
+                border-right:1px solid #F0F0F0;
+            }
+            /*Forms setup*/
+            .form-control {
+                border-radius:0;
+                box-shadow:none;
+                height:auto;
+            }
+            .float-label{
+                font-size:10px;
+            }
+            input[type="text"].form-control,
+            input[type="search"].form-control{
+                border:none;
+                border-bottom:1px dotted #CFCFCF;
+            }
+            textarea {
+                border:1px dotted #CFCFCF!important;
+                height:130px!important;
+            }
+            /*Content Container*/
+            .content-container {
+                background-color:#fff;
+                padding:35px 20px;
+                margin-bottom:20px;
+            }
+            h1.content-title{
+                font-size:32px;
+                font-weight:300;
+                text-align:center;
+                margin-top:0;
+                margin-bottom:20px;
+                font-family: 'Open Sans', sans-serif!important;
+            }
+            /*Compose*/
+            .btn-send{
+                text-align:center;
+                margin-top:20px;
+            }
+            /*mail list*/
+
+            ul.mail-list{
+                padding:0;
+                margin:0;
+                list-style:none;
+                margin-top:30px;
+            }
+            ul.mail-list li a{
+                display:block;
+                border-bottom:1px dotted #CFCFCF;
+                padding:20px;
+                text-decoration:none;
+            }
+            ul.mail-list li:last-child a{
+                border-bottom:none;
+            }
+            ul.mail-list li a:hover{
+                background-color:#DBF9FF;
+            }
+            ul.mail-list li span{
+                display:block;
+            }
+            ul.mail-list li span.mail-sender{
+                font-weight:600;
+                color:#8F8F8F;
+            }
+            ul.mail-list li span.mail-subject{
+                color:#8C8C8C;
+            }
+            ul.mail-list li span.mail-message-preview{
+                display:block;
+                color:#A8A8A8;
+            }
+            .mail-search{
+                border-bottom-color:#7FBCC9!important; 
+            }
+            ]]>
+        </style>
+
+        <ui:fragment rendered="#{not sesion.enSesion}" >
+            <ui:include src="noticias.xhtml"/>
+        </ui:fragment>
+        <ui:fragment rendered="#{sesion.enSesion}">
+            <div class="row">             
+                <ui:insert name="header">
+                    <div class="row">
+                        <div class="panel">
+                            <div class="col-md-2">
+                                <img width="200px"
+                                     height="100px"
+                                     src="http://3.bp.blogspot.com/-t9lYPDRQx00/T0aZqMzIPMI/AAAAAAAAALg/pxgO6jRCGfY/s1600/logo_salud_07-2.jpg"/>
+                            </div>                   
+
+                            <div class="col-md-8">
+                                <div class="page-header">
+                                    <h2>Preparatoria  <small>No. 30, cuajinicuilapa Gro.</small></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ui:insert>
+
+            </div>
+
+            <div class="row">    
+                <div class="col-md-2">                    
+                    <div class="panel panel-primary">
+                        <div  style="min-height: 600px; overflow: auto;">
+                            <ui:insert name="left">                       
+                                <ui:include src="../templates/menuLateralAdmin.xhtml" rendered="#{not empty sesion.usuarioSesion}"/>
+                                <ui:include src="../templates/menuLateralDocente.xhtml" rendered="#{not empty sesion.docente}"/>
+                                <ui:include src="../templates/menuLateralAlumno.xhtml" rendered="#{not empty sesion.alumno}"/>
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="left_content">
+                        <div class="col-md-12 content">
+                            <div class="panel panel-primary">
+                                <div  style="min-height: 600px; overflow: auto;">
+                                    <ui:insert name="content">
+
+                                    </ui:insert>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+
+            </div>
+
+
+            <footer class="text-center footer">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <hr class="divider"/>
+                        <div class="text-center">
+                            <ui:insert name="footer">
+
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            <style>
+                .btn-circle {
+                    width: 30px;
+                    height: 30px;
+                    text-align: center;
+                    padding: 6px 0;
+                    font-size: 12px;
+                    line-height: 1.428571429;
+                    border-radius: 15px;
+                }
+                .btn-circle.btn-lg {
+                    width: 50px;
+                    height: 50px;
+                    padding: 10px 16px;
+                    font-size: 18px;
+                    line-height: 1.33;
+                    border-radius: 25px;
+                }
+                .btn-circle.btn-xl {
+                    width: 70px;
+                    height: 70px;
+                    padding: 10px 16px;
+                    font-size: 24px;
+                    line-height: 1.33;
+                    border-radius: 35px;
+                }
+
+            </style>
+        </ui:fragment>
+    </h:body>
+
+</html>

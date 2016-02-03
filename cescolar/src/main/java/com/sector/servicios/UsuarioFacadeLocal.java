@@ -31,7 +31,7 @@ public interface UsuarioFacadeLocal {
     int count();
     
     
-    Usuario login(String correo,String clave,Integer idSucursal);
+    Usuario login(String correo,String clave);
     
     List<Usuario> listaGerentes(int idSucursal);
     

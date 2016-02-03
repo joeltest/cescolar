@@ -5,6 +5,7 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,20 +15,7 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface SucursalFacadeLocal {
-
-    void create(Sucursal sucursal);
-
-    void edit(Sucursal sucursal);
-
-    void remove(Sucursal sucursal);
-
-    Sucursal find(Object id);
-
-    List<Sucursal> findAll();
-
-    List<Sucursal> findRange(int[] range);
-
-    int count();
+public interface SucursalFacadeLocal extends FacadeLocal<Sucursal>{
+  
     
 }

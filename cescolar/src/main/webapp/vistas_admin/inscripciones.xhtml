@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../WEB-INF/templates/template.xhtml">
+
+            <ui:define name="titulo">
+                INSCRIPCIONES
+            </ui:define>
+            <ui:define name="content">
+                <div class="row">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="No. de Controlx :"/>
+                            <p:inputText value="#{incripcionBean.numeroControl}"
+                                         />
+
+                            <h:outputLabel value="Curso :"/>
+                            <p:selectOneMenu value="#{incripcionBean.idCursoSeleccionado}"                                         
+                                             >
+                                <p:ajax update="@this"
+                                        process="@this"
+                                        />
+                                <f:validator validatorId="combo.requerido"/>
+                                <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                                <f:selectItems value="#{incripcionBean.listaCursoItems}"
+                                               />
+                            </p:selectOneMenu>
+                            <h:outputLabel value="-"/>
+                            <p:commandLink value="Buscar.."
+                                           actionListener="#{incripcionBean.buscarAlumnoPorNumeroControl(eventi)}"
+                                           styleClass="btn btn-primary"
+                                           ajax="false"
+                                           />
+
+                        </h:panelGrid>
+
+                        <div class="col col-md-3">
+                            <h:panelGrid columns="2" rendered="#{not empty incripcionBean.alumno}">
+                                <h:outputLabel value="Numero de control :"/>
+                                <h:outputText value="#{incripcionBean.alumno.numeroControl}"/>
+                                <h:outputLabel value="Nombre :"/>
+                                <h:outputText value="#{incripcionBean.alumno.nombre}"/>
+                                <h:outputLabel value="Apellido paterno :"/>
+                                <h:outputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
+                                <h:outputLabel value="Apellido materno :"/>
+                                <h:outputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
+                                <h:outputLabel value="Fecha Nac.:"/>
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
+                                    <h:outputText value="#{incripcionBean.alumno.mesNacimiento}/s"/>
+                                    <h:outputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+
+                                </h:panelGrid>
+                                <h:outputLabel value="Semestre actual :"/>
+                                <h:outputText value="#{incripcionBean.alumno.semestreActual}"/>
+                                <h:outputLabel value="Ciudad :"/>
+                                <h:outputText value="#{incripcionBean.alumno.ciudad}"/>
+                                <h:outputLabel value="Estado :"/>
+                                <h:outputText value="#{incripcionBean.alumno.estado}"/>
+                                <h:outputLabel value="Colonia :"/>
+                                <h:outputText value="#{incripcionBean.alumno.colonia}"/>
+                                <h:outputLabel value="Calle :"/>
+                                <h:outputText value="#{incripcionBean.alumno.calle}"/>
+                            </h:panelGrid>   
+                        </div>
+                        <div class="col col-md-3">
+                            <p:commandLink value="Inciar Incripción"
+                                           actionListener="#{incripcionBean.prepararNuevaInscripcion}"
+                                           styleClass="btn btn-success"
+                                           rendered="#{not empty incripcionBean.alumno}"
+                                           oncomplete="PF('popupInscripcion').show();"
+                                           update=":formInscripcion"
+                                           >
+
+                            </p:commandLink>                            
+                            <div class="row">
+                                <ui:fragment rendered="#{not empty incripcionBean.alumno}">
+                                    Materias 
+                                    <p:dataTable  id="dataMateriasRead"
+                                                  var="data" value="#{incripcionBean.listaAsignacionMateria}" rows="10"
+                                                  paginator="true"
+                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                  emptyMessage="No hay materias"
+                                                  rowsPerPageTemplate="5,10,15">
+
+                                        <p:column headerText="Observaciones">
+                                            <p:selectBooleanButton value="#{data.repite}" offLabel="no repite" onLabel="Repite"/>
+                                        </p:column>
+
+                                        <p:column headerText="Materia">
+                                            <h:outputText value="#{data.idMateria.nombre}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </ui:fragment>
+                            </div>
+                        </div>
+
+                    </h:form>
+                </div>
+
+
+                <h:form id="formInscripcion">
+                    <p:growl id="messages" showDetail="true" />
+                    <p:dialog header="Incripción" 
+                              widgetVar="popupInscripcion" 
+                              modal="true"
+                              resizable="false"
+                              draggable="false"
+                              minHeight="40">
+                        <div class="panel panel-body">
+                            <div class="row">
+                                <h:outputLabel value="Grado :"/>
+                                <p:selectOneMenu value="#{incripcionBean.idGradoSeleccionado}"           
+                                                 valueChangeListener="#{incripcionBean.valueChangeGrado}"
+                                                 >
+                                    <p:ajax update="@this,dataMaterias"
+                                            process="@this"
+                                            />
+                                    <f:validator validatorId="combo.requerido"/>
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                                    <f:selectItems value="#{incripcionBean.listaGradoItems}"
+                                                   />
+                                </p:selectOneMenu>
+                                <br/>
+                                <h:outputLabel value="Grupo :"/>
+                                <p:selectOneMenu value="#{incripcionBean.idGrupoSeleccionado}"                                         
+                                                 >
+                                    <p:ajax update="@this"
+                                            process="@this"
+                                            />
+                                    <f:validator validatorId="combo.requerido"/>
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                                    <f:selectItems value="#{incripcionBean.listaGrupoItems}"
+                                                   />
+                                </p:selectOneMenu>
+                                <br/>
+                                <h:outputLabel value="Turno :"/>
+                                <p:selectOneMenu value="#{incripcionBean.idTurnoSeleccionado}"                                         
+                                                 >
+                                    <p:ajax update="@this"
+                                            process="@this"
+                                            />
+                                    <f:validator validatorId="combo.requerido"/>
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                                    <f:selectItems value="#{incripcionBean.listaTurnoItems}"
+                                                   />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row">
+                                <span class="text-center"> <h3>Materias</h3> </span>
+                                <p:dataTable  id="dataMaterias"
+                                              var="data" value="#{incripcionBean.listaAsignacionMateria}" rows="10"
+                                              paginator="true"
+                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                              rowsPerPageTemplate="5,10,15">
+
+                                    <p:column headerText="Materia">
+                                        <h:outputText value="#{data.idMateria.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Repite">
+                                        <p:commandLink value="#{data.repite}" actionListener="#{incripcionBean.toggleRepite(data)}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="row text-center">
+                                <p:commandLink value="Inscribir"
+                                               actionListener="#{incripcionBean.guardarInscripcion(e)}"
+                                               ajax="false"
+                                               oncomplete="PF('popupInscripcion').hide();"
+                                               styleClass="btn btn-primary btn-lg">
+
+                                </p:commandLink>
+                                <p:commandLink  
+                                    process="@form"
+                                    styleClass="btn btn-default btn-lg"
+                                    ajax="false"
+                                    onclick="PF('popupInscripcion').hide();"
+                                    value="Cancelar"/>
+
+                            </div>
+                        </div>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

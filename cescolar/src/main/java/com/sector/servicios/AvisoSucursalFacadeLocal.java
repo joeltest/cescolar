@@ -26,7 +26,7 @@ public interface AvisoSucursalFacadeLocal {
 
     List<AvisoSucursal> findAll();
     
-    List<AvisoSucursal> findAllPorSucursal(int idSucursal);
+    List<AvisoSucursal> findAllPorSucursal();
 
     List<AvisoSucursal> findRange(int[] range);
 

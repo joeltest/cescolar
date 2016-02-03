@@ -33,7 +33,7 @@ public class AvisoSucursalFacade extends AbstractFacade<AvisoSucursal> implement
     }
 
     @Override
-    public List<AvisoSucursal> findAllPorSucursal(int idSucursal) {
+    public List<AvisoSucursal> findAllPorSucursal() {
 
         Date hoy = new Date();
 
@@ -43,7 +43,6 @@ public class AvisoSucursalFacade extends AbstractFacade<AvisoSucursal> implement
 
         List<AvisoSucursal> lista
                 = getEntityManager().createNamedQuery("AvisoSucursal.findAllBySucursal")
-                .setParameter("idSucursal", idSucursal)
                 .setParameter("fecha_inicio", fechaInicio)
                 .setParameter("fecha_fin", hoy)
                 .getResultList();

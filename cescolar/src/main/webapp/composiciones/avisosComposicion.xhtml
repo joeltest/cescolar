@@ -12,18 +12,13 @@
 
             <h:form id="contenidoAvisos">               
                 <p:messages showSummary="true" showDetail="false" showIcon="true" closable="true"/>
-                <p:selectOneMenu value="#{avisosBean.idSucursaSeleccionada}"
-                                 style="width: 400px"
-                                 valueChangeListener="#{avisosBean.valueChangeSucursal}"
-                                 >
-                    <f:ajax execute="@this" render="@form"/>
-                    <f:selectItems value="#{avisosBean.listaSucursalItems}"
-                                   />
-                </p:selectOneMenu>   
-                <p:commandLink value="actualizar" 
+
+                <p:commandLink value="Actualizar" 
                                action="#{avisosBean.cargarAvisos()}"
                                update="@form"
+                               styleClass="btn btn-warning pull-right"
                                />
+                
                 <div class="timeline-centered">
                     <ui:repeat value="#{avisosBean.listaAvisos}"
                                var="aviso">
@@ -32,33 +27,36 @@
 
                             <div class="timeline-entry-inner">
 
-                                <div class="timeline-icon bg-info">
-                                    <i class="entypo-feather"></i>
+                                <!-- <div class="timeline-icon bg-danger">-->
+                                <div class="bg-info">
+                                    <span>
+                                        <h:outputText value="#{aviso.fecha}">
+                                            <f:convertDateTime dateStyle="short" type="date"/>
+                                        </h:outputText>
+                                    </span>
                                 </div>
+                                <!--<div class="timeline-icon bg-danger">
+                                    
+                                </div>-->
 
                                 <div class="timeline-label">
                                     <h2>
                                         <h:outputLabel value="#{aviso.usuario.nombre}"/>
                                         <a href="#">#{aviso.titulo}</a> 
-                                        <span>
-                                            <h:outputText value="#{aviso.fecha}">
-                                                <f:convertDateTime dateStyle="short" type="date"/>
-                                            </h:outputText>
-                                            a las 
-                                            <h:outputText value="#{aviso.hora}">
-                                                <f:convertDateTime dateStyle="short" type="time"/>
-                                            </h:outputText>
-                                        </span>
+                                        -
+                                        <h:outputText value="#{aviso.hora}">
+                                            <f:convertDateTime dateStyle="short" type="time"/>
+                                        </h:outputText>
                                     </h2>
                                     <p>
                                         #{aviso.descripcion}
                                     </p>
-                                    <div class="row bg-warning">
-                                        <p:commandLink value="Comentar" 
+                                    <div class="row bg-secondary pull-right">
+                                        <p:commandLink value="Comentar"                                                       
                                                        actionListener="#{avisosBean.iniciarNuevoComentario(event)}"
                                                        oncomplete="PF('popupComentario').show();"
                                                        update=":formCrudComentario"
-                                                       styleClass="btn btn-link">
+                                                       styleClass="btn btn-success">
                                             <f:param name="idAviso" value="#{aviso.id}"/>
                                         </p:commandLink>
 
@@ -127,7 +125,7 @@
                                      required="true"
                                      requiredMessage="* Escribe tu nombre"
                                      />
-                        
+
                         <h:outputLabel value="Escribe el comentario"/>
                         <p:inputTextarea value="#{avisosBean.comentario.comentario}"
                                          required="true"
@@ -144,14 +142,14 @@
                         <p:commandLink value="Guardar"
                                        actionListener="#{avisosBean.guardarNuevoComentario(event)}"
                                        styleClass="btn btn-primary btn-lg"
-                                       update=":contenido"                                           
+                                       update=":contenidoAvisos"                                           
                                        process="@form,:contenidoAvisos"
                                        oncomplete="PF('popupComentario').hide();"
                                        />     
                         <p:commandLink  
                             process="@form"
                             styleClass="btn btn-default btn-lg"
-                            update=":contenido"
+                            update=":contenidoAvisos"
                             onclick="PF('popupComentario').hide();"
                             value="Cancelar"/>
 

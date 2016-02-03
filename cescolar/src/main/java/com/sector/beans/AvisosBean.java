@@ -55,7 +55,6 @@ public class AvisosBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        cargarSucursalCombo();
         
         cargarAvisos();
         
@@ -64,37 +63,15 @@ public class AvisosBean implements Serializable {
     
     public void cargarAvisos(){
         
-        this.setListaAvisos(avisoService.findAllPorSucursal(idSucursaSeleccionada));
+        this.setListaAvisos(avisoService.findAllPorSucursal());
         
     }
-    
-    public void valueChangeSucursal(ValueChangeEvent va ){
-        
-        Integer value = (Integer) va.getNewValue();
-        
-        idSucursaSeleccionada = value;
-        
-        cargarAvisos();
-        
-    }
+   
     
     public List<ComentarioAvisoSucursal> cargarComentarios(int idAviso){
         return comentarioService.findAllPorAviso(idAviso);
     }
     
-     public void cargarSucursalCombo() {
-
-        List<Sucursal> lista = sucursalService.findAll();
-
-        idSucursaSeleccionada = lista != null ? lista.get(0).getId():-1;
-        
-        listaSucursalItems = new ArrayList<>();
-        
-        for (Sucursal u : lista) {
-            getListaSucursalItems().add(new SelectItem(u.getId(), u.getNombre()));
-            
-        }
-    }
 
     //***nuevo aviso
      public void prepararNuevoAviso(ActionEvent event){
@@ -103,8 +80,8 @@ public class AvisosBean implements Serializable {
      }
      
      public void guardarNuevoAviso(ActionEvent ev){
-         avisoSeleccionado.setSucursal(new Sucursal(idSucursaSeleccionada));
-         avisoSeleccionado.setUsuario(sesion.getUsuarioSesion());
+//         avisoSeleccionado.setSucursal(new Sucursal(idSucursaSeleccionada));
+//         avisoSeleccionado.setUsuario(sesion.getUsuarioSesion());
          avisoSeleccionado.setEliminado("False");
          avisoSeleccionado.setFecha(new Date());
          avisoSeleccionado.setHora(new Date());

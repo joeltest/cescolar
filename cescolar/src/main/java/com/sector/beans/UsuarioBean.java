@@ -12,7 +12,6 @@ import com.sector.modelo.Sucursal;
 import com.sector.modelo.TipoUsuario;
 import com.sector.modelo.Usuario;
 import com.sector.servicios.AdjuntoFacadeLocal;
-import com.sector.servicios.ParametroFacadeLocal;
 import com.sector.servicios.UsuarioFacadeLocal;
 import com.sector.utils.FacesUtils;
 import com.sesion.Sesion;
@@ -38,8 +37,6 @@ public class UsuarioBean implements Serializable {
     private AdjuntoFacadeLocal adjuntoService;
     @EJB
     private UsuarioFacadeLocal usuarioService;
-    @EJB
-    private ParametroFacadeLocal parametroService;
 
     private List<ElementoDto> listaElemento;
     private ElementoDto elementoSeleccionado;

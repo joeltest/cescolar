@@ -85,14 +85,11 @@ public class Adjunto implements Serializable {
     @Size(max = 5)
     @Column(name = "ES_REPOSITORIO")
     private String esRepositorio;
-    @OneToMany(mappedBy = "adjunto")
-    private Collection<Formato> formatoCollection;
+   
     @JoinColumn(name = "GENERO", referencedColumnName = "ID")
     @ManyToOne
     private Usuario genero;
-    @JoinColumn(name = "GERENCIA", referencedColumnName = "ID")
-    @ManyToOne
-    private Gerencia gerencia;
+   
 
     public Adjunto() {
     }
@@ -181,14 +178,7 @@ public class Adjunto implements Serializable {
         this.esRepositorio = esRepositorio;
     }
 
-    @XmlTransient
-    public Collection<Formato> getFormatoCollection() {
-        return formatoCollection;
-    }
-
-    public void setFormatoCollection(Collection<Formato> formatoCollection) {
-        this.formatoCollection = formatoCollection;
-    }
+    
 
     public Usuario getGenero() {
         return genero;
@@ -198,13 +188,7 @@ public class Adjunto implements Serializable {
         this.genero = genero;
     }
 
-    public Gerencia getGerencia() {
-        return gerencia;
-    }
-
-    public void setGerencia(Gerencia gerencia) {
-        this.gerencia = gerencia;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -230,5 +214,6 @@ public class Adjunto implements Serializable {
     public String toString() {
         return "com.sector.modelo.Adjunto[ id=" + id + " ]";
     }
+
     
 }

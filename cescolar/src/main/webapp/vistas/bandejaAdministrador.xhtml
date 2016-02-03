@@ -9,6 +9,7 @@
     <body>
 
         <ui:composition>
+            bandeja de administrador
             <section style="background:#efefe9;">
                 <!--<div class="container">-->
                 <div>
@@ -18,13 +19,13 @@
                                 <ul class="nav nav-tabs" id="myTab">
                                     <div class="liner"></div>
                                     <li class="active">
-                                        <a href="#entrada" data-toggle="tab" title="Administrar formatos a gerencias..">
+                                        <a href="#entrada" data-toggle="tab" title="Administrar ..">
                                             <span class="round-tabs one">
                                                 <i class="glyphicon glyphicon-save-file"></i>
                                             </span> 
                                         </a></li>
 
-                                    <li><a href="#revisados" data-toggle="tab" title="Administrar gerencias...">
+                                    <li><a href="#revisados" data-toggle="tab" title="Administrar ...">
                                             <span class="round-tabs two">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                             </span> 
@@ -57,11 +58,9 @@
                                 <div class="tab-pane fade in active" id="entrada">
                                     <h3 class="head text-center">Departamentos<sup>™</sup> <span style="color:#f48260;">♥</span></h3>
                                     <!-- Lista de gerencias con gerentes y formatos -->
-                                    <ui:include src="../composiciones/gerenciaFormatoComposicion.xhtml"/>
                                 </div>
                                 <div class="tab-pane fade" id="revisados">
                                     <h3 class="head text-center">Administrar gerencias</h3>
-                                    <ui:include src="../composiciones/gerenciaUsuarioComposicion.xhtml"/>
 
                                 </div>
                                 <div class="tab-pane fade" id="aceptados">

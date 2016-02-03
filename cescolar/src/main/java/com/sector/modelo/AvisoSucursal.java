@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +26,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,9 +39,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AvisoSucursal.findAllBySucursal", 
-            query = "SELECT g FROM AvisoSucursal g WHERE g.eliminado='False' AND g.sucursal.id = :idSucursal AND g.fecha BETWEEN :fecha_inicio AND :fecha_fin")
+            query = "SELECT g FROM AvisoSucursal g WHERE g.eliminado='False' AND g.fecha BETWEEN :fecha_inicio AND :fecha_fin")
 })
 public class AvisoSucursal implements Serializable {
+    @OneToMany(mappedBy = "avisoSucursal")
+    private Collection<ComentarioAvisoSucursal> comentarioAvisoSucursalCollection;
 
     private static long serialVersionUID = 1L;
 
@@ -66,10 +70,7 @@ public class AvisoSucursal implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuario;
     
-    @JoinColumn(name = "SUCURSAL", referencedColumnName = "ID")
-    @ManyToOne
-    private Sucursal sucursal;
-    
+       
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha; 
@@ -121,13 +122,7 @@ public class AvisoSucursal implements Serializable {
         this.usuario = usuario;
     }
 
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
-    }
+  
 
     public Date getFecha() {
         return fecha;
@@ -143,6 +138,15 @@ public class AvisoSucursal implements Serializable {
 
     public void setHora(Date hora) {
         this.hora = hora;
+    }
+
+    @XmlTransient
+    public Collection<ComentarioAvisoSucursal> getComentarioAvisoSucursalCollection() {
+        return comentarioAvisoSucursalCollection;
+    }
+
+    public void setComentarioAvisoSucursalCollection(Collection<ComentarioAvisoSucursal> comentarioAvisoSucursalCollection) {
+        this.comentarioAvisoSucursalCollection = comentarioAvisoSucursalCollection;
     }
 
 }

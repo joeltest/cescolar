@@ -49,6 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByClave", query = "SELECT u FROM Usuario u WHERE u.clave = :clave"),
     @NamedQuery(name = "Usuario.findByFechaGenero", query = "SELECT u FROM Usuario u WHERE u.fechaGenero = :fechaGenero")})
 public class Usuario implements Serializable {
+   
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -73,8 +74,7 @@ public class Usuario implements Serializable {
     @Column(name = "FECHA_GENERO")
     @Temporal(TemporalType.DATE)
     private Date fechaGenero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioGerente")
-    private Collection<Gerencia> gerenciaCollection;
+   
     @JoinColumn(name = "TIPO_USUARIO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TipoUsuario tipoUsuario;
@@ -83,12 +83,7 @@ public class Usuario implements Serializable {
     private Sucursal sucursal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Collection<UsuarioRol> usuarioRolCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioAprueba")
-    private Collection<Formato> formatoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioGenero")
-    private Collection<Formato> formatoCollection1;
-    @OneToMany(mappedBy = "genero")
-    private Collection<Adjunto> adjuntoCollection;
+  
 
     public Usuario() {
     }
@@ -146,14 +141,6 @@ public class Usuario implements Serializable {
         this.fechaGenero = fechaGenero;
     }
 
-    @XmlTransient
-    public Collection<Gerencia> getGerenciaCollection() {
-        return gerenciaCollection;
-    }
-
-    public void setGerenciaCollection(Collection<Gerencia> gerenciaCollection) {
-        this.gerenciaCollection = gerenciaCollection;
-    }
 
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
@@ -180,32 +167,6 @@ public class Usuario implements Serializable {
         this.usuarioRolCollection = usuarioRolCollection;
     }
 
-    @XmlTransient
-    public Collection<Formato> getFormatoCollection() {
-        return formatoCollection;
-    }
-
-    public void setFormatoCollection(Collection<Formato> formatoCollection) {
-        this.formatoCollection = formatoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Formato> getFormatoCollection1() {
-        return formatoCollection1;
-    }
-
-    public void setFormatoCollection1(Collection<Formato> formatoCollection1) {
-        this.formatoCollection1 = formatoCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Adjunto> getAdjuntoCollection() {
-        return adjuntoCollection;
-    }
-
-    public void setAdjuntoCollection(Collection<Adjunto> adjuntoCollection) {
-        this.adjuntoCollection = adjuntoCollection;
-    }
 
     @Override
     public int hashCode() {
@@ -239,5 +200,6 @@ public class Usuario implements Serializable {
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
     
 }

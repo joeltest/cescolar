@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sucursal.findByEncargado", query = "SELECT s FROM Sucursal s WHERE s.encargado = :encargado"),
     @NamedQuery(name = "Sucursal.findByEliminado", query = "SELECT s FROM Sucursal s WHERE s.eliminado = :eliminado")})
 public class Sucursal implements Serializable {
+    
+  
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -71,8 +73,7 @@ public class Sucursal implements Serializable {
     @Size(max = 5)
     @Column(name = "ELIMINADO")
     private String eliminado;
-    @OneToMany(mappedBy = "sucursal")
-    private Collection<Gerencia> gerenciaCollection;
+    
     @OneToMany(mappedBy = "sucursal")
     private Collection<Usuario> usuarioCollection;
 
@@ -160,14 +161,7 @@ public class Sucursal implements Serializable {
         this.eliminado = eliminado;
     }
 
-    @XmlTransient
-    public Collection<Gerencia> getGerenciaCollection() {
-        return gerenciaCollection;
-    }
-
-    public void setGerenciaCollection(Collection<Gerencia> gerenciaCollection) {
-        this.gerenciaCollection = gerenciaCollection;
-    }
+  
 
     @XmlTransient
     public Collection<Usuario> getUsuarioCollection() {

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -15,21 +16,16 @@
                         <img width="200px"
                              height="100px"
                              src="http://3.bp.blogspot.com/-t9lYPDRQx00/T0aZqMzIPMI/AAAAAAAAALg/pxgO6jRCGfY/s1600/logo_salud_07-2.jpg"/>
-                    </div>
-                    <div class="col-md-2">
-                        <img width="200px"
-                             height="100px"
-                             src="http://ensanut.insp.mx/images/logo_ssa.png"/>
-                    </div>
+                    </div>                   
 
                     <div class="col-md-8">
                         <div class="page-header">
-                            <h1>Sistema de ... <small>Armin ban..</small></h1>
+                            <h2>Preparatoria  <small>No. 30, cuajinicuilapa Gro.</small></h2>
                         </div>
                     </div>
                 </div>
             </div>
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default ">
                 <div class="container-fluid">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
@@ -40,17 +36,13 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="#">
-                            [LOGO] <strong>Preparatoria No.30</strong>
+                            [LOGO] 
                         </a>
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">			
-                        <form class="navbar-form navbar-left" method="GET" role="search">
-                            <div class="form-group">
-                            </div>
-                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-                        </form>
+                      
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="http://www.pingpong-labs.com" target="_blank">Visit Site</a></li>
                             <li class="dropdown ">
@@ -73,15 +65,22 @@
             <div class="container-fluid main-container" >
                 <div class="col-md-2 sidebar">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#">Avisos</a></li>
-                        <li><a href="#">Link</a></li>
                         <li>
                             <h:form >
-                                <div class="panel panel-default">
+                                <div class="panel panel-danger">
                                     <div class="panel-heading">
                                         Acceso
                                     </div>
                                     <div class="panel panel-body">
+                                        <p:selectOneMenu value="#{sesion.tipoLogin}"
+                                                         immediate="true"
+                                                         >
+                                            <f:selectItem itemValue="-1" itemLabel="Seleccione . . . "/>
+                                            <f:selectItem itemValue="1" itemLabel="ADMIN"/>
+                                            <f:selectItem itemValue="2" itemLabel="DOCENTE"/>
+                                            <f:selectItem itemValue="3" itemLabel="ALUMNO"/>
+                                        </p:selectOneMenu>
+                                        
                                         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
                                         <p:inputText id="usuario"
                                                      value="#{sesion.usuarioTemp}" 
@@ -99,7 +98,7 @@
                                                      type="password"/>
 
                                         <p:commandLink value="Iniciar sesion"
-                                                       styleClass="btn btn-lg btn-success btn-block btn-signin"
+                                                       styleClass="btn btn-lg btn-default btn-block btn-signin"
                                                        actionListener="#{sesion.login(event)}"
                                                        ajax="false"
                                                        />
@@ -121,9 +120,9 @@
                     </ul>
                 </div>
                 <div class="col-md-10 content">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            Avisos hasta la fecha
+                    <div class="panel">
+                        <div class="panel-heading text-center">
+                            <h2>Avisos hasta la fecha</h2>
                         </div>
                         <div class="panel-body">
                             <ui:include src="../../composiciones/avisosComposicion.xhtml"/>
@@ -132,7 +131,7 @@
                     <footer class="pull-left footer">
                         <p class="col-md-12">
                             <hr class="divider"/>
-                            Copyright &COPY; 2015 <a href="http://www.teenstubers.com">Gerardo ..</a>
+                            Copyright &COPY; 2015 
                         </p>
                     </footer>
                 </div>
