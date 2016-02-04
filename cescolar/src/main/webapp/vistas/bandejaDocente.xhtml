@@ -10,7 +10,7 @@
 
         <!-- <ui:composition template="./../WEB-INF/templates/template.xhtml">-->
          <ui:composition>
-bandeja de docente
+                Bandeja de docente
                 <nav class="navbar navbar-default navbar-static-top" role="navigation">
                     <div class="container">
                         <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,9 +26,8 @@ bandeja de docente
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <div class="btn-compose pull-left">
                                 <h:form>                                    
-                                    <p:commandLink value="Capturar nuevo formato"
-                                                   process="@this"
-                                                   actionListener="#{formatoBean.preprarNuevo(event)}"
+                                    <p:commandLink value="Capturar calificaciones"
+                                                   process="@this"                                                   
                                                    update=":formCrudFormato"
                                                    styleClass="btn btn-danger navbar-btn"
                                                    oncomplete="PF('popupCrud').show();"
@@ -38,16 +37,16 @@ bandeja de docente
                             <ul class="nav navbar-nav">
                                 <li>
                                     <a href="#inbox" role="tab" data-toggle="tab">
-                                        Pendiente <span class="label label-success">10</span>
+                                         <span class="label label-success">10</span>
                                     </a>
                                 </li>
-                                <li><a href="#sent-mail" role="tab" data-toggle="tab">Enviados</a>
+                                <li><a href="#sent-mail" role="tab" data-toggle="tab">Cossultar</a>
 
                                 </li>
-                                <li><a href="#draft" role="tab" data-toggle="tab">Devueltos</a>
+                                <li><a href="#draft" role="tab" data-toggle="tab">Mi perfil</a>
 
                                 </li>
-                                <li><a href="#trash" role="tab" data-toggle="tab">Descargar</a>
+                                <li><a href="#trash" role="tab" data-toggle="tab">Aviso</a>
 
                                 </li>
                             </ul>
@@ -62,10 +61,8 @@ bandeja de docente
                         <div class="container">
                             <div class="content-container clearfix">
                                 <div class="col-md-12">
-                                    <h1 class="content-title">Formatos pendientes de envio</h1>
+                                    <h1 class="content-title">Captura de calificaciones</h1>
 
-                                    <!--<input type="search" placeholder="Search Mail" class="form-control mail-search" />
-                                    -->
                                     <ui:include src="../composiciones/bandejaCapturistaComposicion.xhtml"/>
                                 </div>
                             </div>
