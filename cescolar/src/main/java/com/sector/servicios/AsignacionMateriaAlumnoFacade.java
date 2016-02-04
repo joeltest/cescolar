@@ -32,6 +32,7 @@ public class AsignacionMateriaAlumnoFacade extends AbstractFacade<AsignacionMate
 
     @Override
     public List<AsignacionMateriaAlumno> findAllPorInscripcionAlumno(int idInscripcionAlumno) {
+        System.out.println("findAllPorInscripcionAlumno "+idInscripcionAlumno);
         return em.createQuery("SELECT i FROM AsignacionMateriaAlumno i WHERE i.idIncripcionAlumno.id = "+idInscripcionAlumno)
                 .getResultList();
     }

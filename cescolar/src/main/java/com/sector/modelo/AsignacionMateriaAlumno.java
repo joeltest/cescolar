@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ASIGNACION_MATERIA_ALUMNO")
-@SequenceGenerator(sequenceName = "GENERAL_ID",
-        name = "gen_seq", allocationSize = 1)
+//@SequenceGenerator(sequenceName = "GENERAL_ID",
+//        name = "gen_seq", allocationSize = 1)
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AsignacionMateriaAlumno.findAll", query = "SELECT a FROM AsignacionMateriaAlumno a"),
@@ -43,11 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
 public class AsignacionMateriaAlumno implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(generator = "gen_seq", strategy = GenerationType.SEQUENCE)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @GeneratedValue(generator = "gen_seq", strategy = GenerationType.SEQUENCE)
+    
     @Size(max = 5)
     @Column(name = "REPITE")
     private String repite;

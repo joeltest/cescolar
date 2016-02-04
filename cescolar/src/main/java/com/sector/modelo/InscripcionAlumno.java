@@ -45,11 +45,12 @@ import javax.xml.bind.annotation.XmlTransient;
 public class InscripcionAlumno implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(generator = "gen_seq", strategy = GenerationType.SEQUENCE)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @GeneratedValue(generator = "gen_seq", strategy = GenerationType.SEQUENCE)
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PROMEDIO")
     private BigDecimal promedio;

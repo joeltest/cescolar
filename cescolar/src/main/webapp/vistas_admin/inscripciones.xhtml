@@ -10,15 +10,14 @@
 
         <ui:composition template="./../WEB-INF/templates/template.xhtml">
 
-            <ui:define name="titulo">
-                <p:messages />
+            <ui:define name="titulo">               
                 INSCRIPCIONES
-                
             </ui:define>
             <ui:define name="content">
+                 <p:messages />
                 <div class="row">
                     <h:form>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="5">
                             <h:outputLabel value="No. de Control :"/>
                             <p:inputText value="#{incripcionBean.numeroControl}"
                                          />
@@ -34,7 +33,6 @@
                                 <f:selectItems value="#{incripcionBean.listaCursoItems}"
                                                />
                             </p:selectOneMenu>
-                            <h:outputLabel value="-"/>
                             <p:commandLink value="Buscar.."
                                            actionListener="#{incripcionBean.buscarAlumnoPorNumeroControl(eventi)}"
                                            styleClass="btn btn-primary"
@@ -42,8 +40,14 @@
                                            />
 
                         </h:panelGrid>
+                        <br/>
 
                         <div class="col col-md-3">
+                             <p:commandLink value="Modificar datos de alumno"
+                                           styleClass="btn btn-primary"
+                                           rendered="#{not empty incripcionBean.alumno}"                                           
+                                           ajax="false"
+                                           />
                             <h:panelGrid columns="2" rendered="#{not empty incripcionBean.alumno}">
                                 <h:outputLabel value="Numero de control :"/>
                                 <h:outputText value="#{incripcionBean.alumno.numeroControl}"/>
@@ -73,12 +77,31 @@
                             </h:panelGrid>   
                         </div>
                         <div class="col col-md-9">
-                            <p:commandLink value="Inciar Incripción"
-                                           actionListener="#{incripcionBean.prepararNuevaInscripcion}"
+                            <p:commandLink value="Iniciar Inscripción"
+                                           actionListener="#{incripcionBean.prepararNuevaInscripcion(ev)}"
                                            styleClass="btn btn-success"
-                                           rendered="#{not empty incripcionBean.alumno}"
                                            oncomplete="PF('popupInscripcion').show();"
                                            update=":formInscripcion"
+                                           rendered="#{empty incripcionBean.selected}"
+                                           >
+
+                            </p:commandLink>   
+                            
+                            <p:commandLink value="Modificar Incripción"
+                                           actionListener="#{incripcionBean.preparaModificacionInscripcion(e)}"
+                                           styleClass="btn btn-success"
+                                           oncomplete="PF('popupInscripcion').show();"
+                                           update=":formInscripcion"
+                                           rendered="#{(not empty incripcionBean.selected) and (not empty incripcionBean.alumno)}"
+                                           >
+
+                            </p:commandLink>    
+                            
+                            <p:commandLink value="Eliminar Incripción"
+                                           actionListener="#{incripcionBean.eliminacion(event)}"
+                                           styleClass="btn btn-success"
+                                           ajax="false"
+                                           rendered="#{(not empty incripcionBean.selected) and (not empty incripcionBean.alumno)}"
                                            >
 
                             </p:commandLink>                            
@@ -93,12 +116,16 @@
                                                   styleClass="table"
                                                   rowsPerPageTemplate="5,10,15">
 
-                                        <p:column headerText="Observaciones">
-                                            <p:selectBooleanButton value="#{data.repite}" offLabel="no repite" onLabel="Repite"/>
-                                        </p:column>
+
 
                                         <p:column headerText="Materia">
                                             <h:outputText value="#{data.idMateria.nombre}"/>
+                                        </p:column>
+                                        <p:column headerText="Repite">
+                                            <h:outputLabel value="#{data.repite eq 'True' ? 'NA':''}"/>
+                                        </p:column>
+                                        <p:column headerText="Observaciones">
+                                            <h:outputLabel value="#{data.observaciones}"/>
                                         </p:column>
                                     </p:dataTable>
                                 </ui:fragment>
@@ -168,12 +195,19 @@
                                         <h:outputText value="#{data.idMateria.nombre}"/>
                                     </p:column>
                                     <p:column headerText="Repite">
-                                        <p:commandLink value="#{data.repite}" actionListener="#{incripcionBean.toggleRepite(data)}"/>
+                                        <p:commandLink value="#{data.repite eq 'True' ? 'Repite':'No Repite'}" actionListener="#{incripcionBean.toggleRepite(data)}"
+                                                       update="dataMaterias"
+                                                       process="@this"
+                                                       />
+
+                                    </p:column>
+                                    <p:column headerText="Observaciones">
+                                        <p:inputTextarea rows="3" cols="20" value="#{data.observaciones}"/>
                                     </p:column>
                                 </p:dataTable>
                             </div>
                             <div class="row text-center">
-                                <p:commandLink value="Inscribir"
+                                <p:commandLink value="Guardar"
                                                actionListener="#{incripcionBean.guardarInscripcion(e)}"
                                                ajax="false"
                                                oncomplete="PF('popupInscripcion').hide();"

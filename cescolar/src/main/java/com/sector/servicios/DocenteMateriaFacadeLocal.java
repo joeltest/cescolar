@@ -5,6 +5,7 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.DocenteMateria;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,20 +15,9 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface DocenteMateriaFacadeLocal {
+public interface DocenteMateriaFacadeLocal extends FacadeLocal<DocenteMateria>{
 
-    void create(DocenteMateria docenteMateria);
 
-    void edit(DocenteMateria docenteMateria);
-
-    void remove(DocenteMateria docenteMateria);
-
-    DocenteMateria find(Object id);
-
-    List<DocenteMateria> findAll();
-
-    List<DocenteMateria> findRange(int[] range);
-
-    int count();
+    List<DocenteMateria> findAllPorTurno(int idDocente,int idTurno);
     
 }

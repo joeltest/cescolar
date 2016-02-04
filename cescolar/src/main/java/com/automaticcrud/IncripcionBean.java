@@ -24,6 +24,7 @@ import com.sector.servicios.InscripcionAlumnoFacadeLocal;
 import com.sector.servicios.MateriaFacadeLocal;
 import com.sector.servicios.SucursalFacadeLocal;
 import com.sector.servicios.TurnoFacadeLocal;
+import com.sector.utils.FacesUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -113,6 +114,9 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
         prepararEliminacion(event);
         getSelected().setEliminado("True");
         persistir();
+        this.setSelected(null);
+        this.alumno = null;
+        FacesUtils.addInfoMessage("Se elimino el registro..");
     }
 
     public void buscarPorSeleccion(ActionEvent event) {
@@ -122,20 +126,21 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     public void buscarAlumnoPorNumeroControl(ActionEvent eventi) {
         this.setAlumno(alummnoService.findNumeroControl(getNumeroControl()));
-        this.setSelected(servicio.buscarInscripcionAlumno(this.alumno.getId(), idCursoSeleccionado));
+        if (alumno != null) {
+            this.setSelected(servicio.buscarInscripcionAlumno(this.alumno.getId(), idCursoSeleccionado));
 
-        //cargar la inscripcion
-        setSelected(inscripcionAlummnoService.buscarInscripcionAlumno(alumno.getId(), idCursoSeleccionado));
-
-        //cargar las asignaturas 
-        if (getSelected() != null) {
-            idGradoSeleccionado = getSelected().getIdGrado().getId();
-            idGrupoSeleccionado = getSelected().getIdGrupo().getId();
-            idTurnoSeleccionado = getSelected().getIdTurno().getId();
-            idAlumnoSeleccionado = alumno.getId();
-            this.listaAsignacionMateria = asignacionMateriAlumnoMateriaService.findAllPorInscripcionAlumno(getSelected().getId());
+            setSelected(inscripcionAlummnoService.buscarInscripcionAlumno(alumno.getId(), idCursoSeleccionado));
+            //cargar las asignaturas 
+            if (getSelected() != null) {
+                idGradoSeleccionado = getSelected().getIdGrado().getId();
+                idGrupoSeleccionado = getSelected().getIdGrupo().getId();
+                idTurnoSeleccionado = getSelected().getIdTurno().getId();
+                idAlumnoSeleccionado = alumno.getId();
+                this.listaAsignacionMateria = asignacionMateriAlumnoMateriaService.findAllPorInscripcionAlumno(getSelected().getId());
+            }
+        } else {
+            FacesUtils.addWarnMessage("No se encontro el numero de control escrito..");
         }
-
     }
 
     public void prepararNuevaInscripcion(ActionEvent ev) throws InstantiationException, IllegalAccessException {
@@ -148,26 +153,24 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
         //llenar las materias por grado 
     }
-
-    public void valueChangeGrado(ValueChangeEvent chan) {
-        idGradoSeleccionado = (Integer) chan.getNewValue();
-
-        //obtener el plan de materias para el grado seleccionado
-        listaMateria = materiaService.findAllByGrado(idGradoSeleccionado);
-        listaAsignacionMateria = new ArrayList<>();
-
-        for (Materia m : listaMateria) {
-            AsignacionMateriaAlumno asignacion = new AsignacionMateriaAlumno();
-            asignacion.setIdMateria(m);
-            asignacion.setRepite("False");
-            asignacion.setEliminado("False");
-            listaAsignacionMateria.add(asignacion);
-        }
+    
+    
+    public void eliminarInscripcion(ActionEvent e){
+        
+        getSelected().setEliminado("True");
+        
+        servicio.edit(getSelected());
     }
 
-    public void guardarInscripcion(ActionEvent e) {
+    public void preparaModificacionInscripcion(ActionEvent e) {
+        prepararModificacion();
+        llenarGradoItem();
+        llenarGrupoItem();
+        llenarTurnoItem();
 
-        getSelected().setIdAlumno(alumno);
+    }
+
+    public void modificarInscripcion(ActionEvent e) {
         getSelected().setIdCurso(new Curso(idCursoSeleccionado));
         getSelected().setIdGrado(new Grado(idGradoSeleccionado));
         getSelected().setIdGrupo(new Grupo(idGrupoSeleccionado));
@@ -176,14 +179,58 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
         persistir();
 
         for (AsignacionMateriaAlumno asignacion : listaAsignacionMateria) {
-//            AsignacionMateriaAlumno asignacion = new AsignacionMateriaAlumno();
-            asignacion.setIdIncripcionAlumno(getSelected());
-            asignacion.setRepite("False");
-            asignacion.setEliminado("False");
-            System.out.println("Asignacion de materia ");
-            asignacionMateriAlumnoMateriaService.create(asignacion);
+
+            System.out.println("Modificar Asignacion de materia ");
+            asignacionMateriAlumnoMateriaService.edit(asignacion);
         }
 
+    }
+
+    public void valueChangeGrado(ValueChangeEvent chan) {
+        idGradoSeleccionado = (Integer) chan.getNewValue();
+
+        if (getOPERACION() == CrudActions.MODIFICAR) {
+            
+            this.listaAsignacionMateria = asignacionMateriAlumnoMateriaService.findAllPorInscripcionAlumno(getSelected().getId());
+        
+        } else {
+            //obtener el plan de materias para el grado seleccionado
+            listaMateria = materiaService.findAllByGrado(idGradoSeleccionado);
+            listaAsignacionMateria = new ArrayList<>();
+
+            for (Materia m : listaMateria) {
+                AsignacionMateriaAlumno asignacion = new AsignacionMateriaAlumno();
+                asignacion.setIdMateria(m);
+                asignacion.setRepite("False");
+                asignacion.setEliminado("False");
+                listaAsignacionMateria.add(asignacion);
+            }
+        }
+    }
+
+    public void guardarInscripcion(ActionEvent e) {
+
+        if (getOPERACION() == CrudActions.MODIFICAR) {
+            modificarInscripcion(e);
+        } else {
+
+            getSelected().setIdAlumno(alumno);
+            getSelected().setIdCurso(new Curso(idCursoSeleccionado));
+            getSelected().setIdGrado(new Grado(idGradoSeleccionado));
+            getSelected().setIdGrupo(new Grupo(idGrupoSeleccionado));
+            getSelected().setIdTurno(new Turno(idTurnoSeleccionado));
+
+            persistir();
+
+            for (AsignacionMateriaAlumno asignacion : listaAsignacionMateria) {
+//            AsignacionMateriaAlumno asignacion = new AsignacionMateriaAlumno();
+                asignacion.setIdIncripcionAlumno(getSelected());
+                asignacion.setRepite("False");
+                asignacion.setEliminado("False");
+                System.out.println("Asignacion de materia ");
+                asignacionMateriAlumnoMateriaService.create(asignacion);
+            }
+        }
     }
 
     public void toggleRepite(AsignacionMateriaAlumno asig) {

@@ -6,6 +6,7 @@
 package com.sector.servicios;
 
 import com.sector.modelo.DocenteMateria;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,12 @@ public class DocenteMateriaFacade extends AbstractFacade<DocenteMateria> impleme
 
     public DocenteMateriaFacade() {
         super(DocenteMateria.class);
+    }
+
+    @Override
+    public List<DocenteMateria> findAllPorTurno(int idDocente, int idTurno) {
+        return em.createQuery("SELECT o FROM DocenteMateria o WHERE o.idDocente.id = "+idDocente+" AND o.idTurno.id = "+idTurno+" AND o.eliminado='False'")
+                .getResultList();
     }
     
 }
