@@ -5,6 +5,7 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Calificacion;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,20 +15,7 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface CalificacionFacadeLocal {
+public interface CalificacionFacadeLocal extends FacadeLocal<Calificacion>{
 
-    void create(Calificacion calificacion);
-
-    void edit(Calificacion calificacion);
-
-    void remove(Calificacion calificacion);
-
-    Calificacion find(Object id);
-
-    List<Calificacion> findAll();
-
-    List<Calificacion> findRange(int[] range);
-
-    int count();
     
 }

@@ -5,6 +5,8 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.BaseCrud;
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Materia;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,22 +16,11 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface MateriaFacadeLocal {
-
-    void create(Materia materia);
-
-    void edit(Materia materia);
-
-    void remove(Materia materia);
-
-    Materia find(Object id);
-
-    List<Materia> findAll();
+public interface MateriaFacadeLocal extends FacadeLocal<Materia>{
+    
     
     List<Materia> findAllByGrado(int idGrado);
 
-    List<Materia> findRange(int[] range);
 
-    int count();
     
 }

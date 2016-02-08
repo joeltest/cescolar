@@ -97,7 +97,7 @@ public class Sesion implements Serializable {
     }
 
     public void redireccionarPrincipal(ActionEvent event) {
-        UtilsRedirect.redireccionarContexto("/cescolar");
+        UtilsRedirect.redireccionarContexto("/Prepa");
     }
 
     /**

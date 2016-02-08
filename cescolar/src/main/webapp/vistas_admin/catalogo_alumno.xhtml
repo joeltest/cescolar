@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../WEB-INF/templates/template.xhtml">
+
+            <ui:define name="titulo">               
+                ABC ALUMNOS
+            </ui:define>
+            <ui:define name="content">
+                <p:messages />
+                <div class="row">
+                    <h:form>
+                        <h:panelGrid columns="5">
+                            <h:outputLabel value="No. de Control :"/>
+                            <p:inputText value="#{incripcionBean.numeroControl}"
+                                         />
+
+                            <h:outputLabel value="Curso :"/>
+                            <p:selectOneMenu value="#{incripcionBean.idCursoSeleccionado}"                                         
+                                             >
+                                <p:ajax update="@this"
+                                        process="@this"
+                                        />
+                                <f:validator validatorId="combo.requerido"/>
+                                <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                                <f:selectItems value="#{incripcionBean.listaCursoItems}"
+                                               />
+                            </p:selectOneMenu>
+                            <p:commandLink value="Buscar.."
+                                           actionListener="#{incripcionBean.buscarAlumnoPorNumeroControl(eventi)}"
+                                           styleClass="btn btn-primary"
+                                           ajax="false"
+                                           />
+
+                        </h:panelGrid>
+                        <br/>
+
+                        <div class="col col-md-3">
+                            <p:commandLink value="Modificar datos de alumno"
+                                           styleClass="btn btn-primary"
+                                           rendered="#{not empty incripcionBean.alumno}"                                           
+                                           ajax="false"
+                                           />
+                            <h:panelGrid columns="2" rendered="#{not empty incripcionBean.alumno}">
+                                <h:outputLabel value="Numero de control :"/>
+                                <h:outputText value="#{incripcionBean.alumno.numeroControl}"/>
+                                <h:outputLabel value="Nombre :"/>
+                                <h:outputText value="#{incripcionBean.alumno.nombre}"/>
+                                <h:outputLabel value="Apellido paterno :"/>
+                                <h:outputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
+                                <h:outputLabel value="Apellido materno :"/>
+                                <h:outputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
+                                <h:outputLabel value="Fecha Nac.:"/>
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
+                                    <h:outputText value="#{incripcionBean.alumno.mesNacimiento}/"/>
+                                    <h:outputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+
+                                </h:panelGrid>
+                                <h:outputLabel value="Semestre actual :"/>
+                                <h:outputText value="#{incripcionBean.alumno.semestreActual}"/>
+                                <h:outputLabel value="Ciudad :"/>
+                                <h:outputText value="#{incripcionBean.alumno.ciudad}"/>
+                                <h:outputLabel value="Estado :"/>
+                                <h:outputText value="#{incripcionBean.alumno.estado}"/>
+                                <h:outputLabel value="Colonia :"/>
+                                <h:outputText value="#{incripcionBean.alumno.colonia}"/>
+                                <h:outputLabel value="Calle :"/>
+                                <h:outputText value="#{incripcionBean.alumno.calle}"/>
+                            </h:panelGrid>   
+                        </div>
+
+                    </h:form>
+                </div>
+
+
+                <h:form id="formNuevo">
+                    <p:growl id="messages" showDetail="true" />
+                    <p:dialog header="Incripción" 
+                              widgetVar="popNuevoAlumno" 
+                              modal="true"
+                              resizable="false"
+                              draggable="false"
+                              minHeight="40">
+                        <div class="panel panel-body">
+                            <div class="row">
+
+                                <h:outputLabel value="Numero de control :"/>
+                                <p:inputText value="#{incripcionBean.alumno.numeroControl}"/>
+                                <h:outputLabel value="Nombre :"/>
+                                <p:inputText value="#{incripcionBean.alumno.nombre}"/>
+                                <h:outputLabel value="Apellido paterno :"/>
+                                <p:inputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
+                                <h:outputLabel value="Apellido materno :"/>
+                                <p:inputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
+                                <h:outputLabel value="Fecha Nac.:"/>                                                           
+                                <h:panelGrid columns="3">
+                                    <p:inputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
+                                    <p:inputText value="#{incripcionBean.alumno.mesNacimiento}/"/>
+                                    <p:inputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+                                </h:panelGrid>
+                                <h:outputLabel value="Semestre actual :"/>
+                                <p:inputText value="#{incripcionBean.alumno.semestreActual}"/>
+                                <h:outputLabel value="Ciudad :"/>
+                                <p:inputText value="#{incripcionBean.alumno.ciudad}"/>
+                                <h:outputLabel value="Estado :"/>
+                                <p:inputText value="#{incripcionBean.alumno.estado}"/>
+                                <h:outputLabel value="Colonia :"/>
+                                <p:inputText value="#{incripcionBean.alumno.colonia}"/>
+                                <h:outputLabel value="Calle :"/>
+                                <p:inputText value="#{incripcionBean.alumno.calle}"/>
+
+
+                            </div>                          
+                            <div class="row text-center">
+                                <p:commandLink value="Guardar"
+                                               actionListener="#{incripcionBean.guardarInscripcion(e)}"
+                                               ajax="false"
+                                               oncomplete="PF('popupInscripcion').hide();"
+                                               styleClass="btn btn-primary btn-lg">
+
+                                </p:commandLink>
+                                <p:commandLink  
+                                    process="@form"
+                                    styleClass="btn btn-default btn-lg"
+                                    ajax="false"
+                                    onclick="PF('popupInscripcion').hide();"
+                                    value="Cancelar"/>
+
+                            </div>
+                        </div>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

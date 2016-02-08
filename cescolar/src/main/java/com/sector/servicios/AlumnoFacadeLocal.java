@@ -5,6 +5,7 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Alumno;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,24 +15,9 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface AlumnoFacadeLocal {
+public interface AlumnoFacadeLocal extends FacadeLocal<Alumno>{
 
-    void create(Alumno alumno);
-
-    void edit(Alumno alumno);
-
-    void remove(Alumno alumno);
-
-    Alumno find(Object id);
-    
     Alumno login(String numeroControl,String clave);
-    
-    List<Alumno> findAll();
-    
-
-    List<Alumno> findRange(int[] range);
-
-    int count();
     
     Alumno findNumeroControl(String comodin);
     

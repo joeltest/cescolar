@@ -44,7 +44,7 @@ import javax.faces.view.ViewScoped;
  */
 @ManagedBean
 @SessionScoped
-public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
+public class MateriaBean extends BaseCrud<InscripcionAlumno> {
 
     @EJB
     private InscripcionAlumnoFacadeLocal servicio;
@@ -94,7 +94,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
     private int idGrupoSeleccionado;
     private int idTurnoSeleccionado;
 
-    public IncripcionBean() {
+    public MateriaBean() {
         super(InscripcionAlumno.class);
     }
 
@@ -104,9 +104,9 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
             preprarNuevoRegistro();
             llenarCursoItem();
         } catch (InstantiationException ex) {
-            Logger.getLogger(IncripcionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MateriaBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(IncripcionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MateriaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

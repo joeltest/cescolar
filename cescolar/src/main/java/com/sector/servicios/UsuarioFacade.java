@@ -10,6 +10,7 @@ import com.sector.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -33,12 +34,15 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
 
     @Override
     public Usuario login(String correo, String clave) {
-
-        Usuario usuario = em.createNamedQuery("Usuario.login",Usuario.class)
+        Usuario usuario = null;
+        try{
+         usuario = em.createNamedQuery("Usuario.login",Usuario.class)
                 .setParameter("correo", correo)
                 .setParameter("clave", clave)
                 .getSingleResult();
-        
+        }catch(NoResultException nre){
+            System.out.println("No se encontro.---"+nre.getMessage());
+        }
         return usuario;
     }
 

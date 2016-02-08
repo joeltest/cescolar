@@ -5,6 +5,7 @@
  */
 package com.sector.servicios;
 
+import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Grupo;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,20 +15,7 @@ import javax.ejb.Local;
  * @author jorodriguez
  */
 @Local
-public interface GrupoFacadeLocal {
+public interface GrupoFacadeLocal  extends FacadeLocal<Grupo>{
 
-    void create(Grupo grupo);
-
-    void edit(Grupo grupo);
-
-    void remove(Grupo grupo);
-
-    Grupo find(Object id);
-
-    List<Grupo> findAll();
-
-    List<Grupo> findRange(int[] range);
-
-    int count();
     
 }
