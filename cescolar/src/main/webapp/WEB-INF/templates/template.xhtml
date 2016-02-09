@@ -32,10 +32,10 @@
                 <ui:insert name="header">
                     <div class="row">
                         <div class="panel">
-                            <div class="col-md-2">
-                                <img width="200px"
+                            <div class="col-md-2 text-center">
+                                <img width="100px"
                                      height="100px"
-                                     src="http://3.bp.blogspot.com/-t9lYPDRQx00/T0aZqMzIPMI/AAAAAAAAALg/pxgO6jRCGfY/s1600/logo_salud_07-2.jpg"/>
+                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Escudo_de_la_UAGro.png/240px-Escudo_de_la_UAGro.png"/>
                             </div>                   
 
                             <div class="col-md-8">
@@ -55,7 +55,8 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""/>
+                            <img src="http://www.coordinadora.com/wp-content/uploads/sidebar_usuario-corporativo.png" 
+                                 class="img-responsive" alt=""/>
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
@@ -93,24 +94,10 @@
                         <!-- END SIDEBAR BUTTONS -->
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
-                            <ul class="nav">
-                                <h:form id="formMenuLateral">
-                                    <li class="list-group-item active">
-                                        <p:commandLink value="PRINCIPAL"   
-                                                       styleClass="glyphicon glyphicon-home"
-                                                       ></p:commandLink>
-                                    </li>
-                                    <ui:fragment rendered="#{not empty sesion.usuarioSesion}">
-                                        <ui:include src="../templates/menuLateral_admin.xhtml" />
-                                    </ui:fragment>
-                                    <ui:fragment rendered="#{not empty sesion.docente}">
-                                        <ui:include src="../templates/menuLateral_docente.xhtml" />
-                                    </ui:fragment>
-                                    <ui:fragment rendered="#{not empty sesion.alumno}">
-                                        <ui:include src="../templates/menuLateral_alumno.xhtml" />
-                                    </ui:fragment>
-                                </h:form>
-                            </ul>
+                            <ui:insert name="sidebar">
+                                
+                            </ui:insert>
+                                <!--<ui:include src="principal_admin.xhtml"/>-->
                         </div>
                         <!-- END MENU -->
                     </div>

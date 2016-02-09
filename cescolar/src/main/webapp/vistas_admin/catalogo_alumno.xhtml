@@ -11,7 +11,12 @@
         <ui:composition template="./../WEB-INF/templates/template.xhtml">
 
             <ui:define name="titulo">               
+                 <ui:include src="dashboard_catalogo.xhtml"/>
                 ABC ALUMNOS
+               
+            </ui:define>
+              <ui:define name="sidebar">
+                  <ui:include src="../menuLateral_admin.xhtml"/>
             </ui:define>
             <ui:define name="content">
                 <p:messages />

@@ -33,13 +33,14 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author ihsa
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class DocenteMateriaBean extends BaseCrud<DocenteMateria> {
 
     @EJB
@@ -48,8 +49,6 @@ public class DocenteMateriaBean extends BaseCrud<DocenteMateria> {
     @EJB
     private AlumnoFacadeLocal alummnoService;
 
-    @EJB
-    private InscripcionAlumnoFacadeLocal inscripcionAlummnoService;
 
     @EJB
     private CursoFacadeLocal cursoService;
@@ -65,9 +64,6 @@ public class DocenteMateriaBean extends BaseCrud<DocenteMateria> {
 
     @EJB
     private MateriaFacadeLocal materiaService;
-
-    @EJB
-    private AsignacionMateriaAlumnoFacadeLocal asignacionMateriAlumnoMateriaService;
 
     @EJB
     private DocenteFacadeLocal docenteService;

@@ -13,6 +13,9 @@
             <ui:define name="titulo">               
                 INSCRIPCIONES
             </ui:define>
+            <ui:define name="sidebar">
+                 <ui:include src="../menuLateral_admin.xhtml"/>
+            </ui:define>
             <ui:define name="content">
                  <p:messages />
                 <div class="row">
@@ -107,7 +110,7 @@
                             </p:commandLink>                            
                             <div class="row">
                                 <ui:fragment rendered="#{not empty incripcionBean.alumno}">
-                                    Materias 
+                                    <div  class=" row text-center"> <h3>Materias del curso </h3></div>
                                     <p:dataTable  id="dataMateriasRead"
                                                   var="data" value="#{incripcionBean.listaAsignacionMateria}" rows="10"
                                                   paginator="true"

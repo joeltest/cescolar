@@ -9,9 +9,27 @@
 
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
+            <ui:define name="sidebar">
+
+                    <li class="list-group-item active">
+                        <p:commandLink value="PRINCIPAL"   
+                                       styleClass="glyphicon glyphicon-home"
+                                       ></p:commandLink>
+                    </li>
+                    <ui:fragment rendered="#{not empty sesion.usuarioSesion}">
+                        <ui:include src="menuLateral_admin.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{not empty sesion.docente}">
+                        <ui:include src="menuLateral_docente.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{not empty sesion.alumno}">
+                        <ui:include src="menuLateral_alumno.xhtml" />
+                    </ui:fragment>
+            </ui:define>
+
             <ui:define name="content">
-                
-                
+
+
             </ui:define>
 
         </ui:composition>

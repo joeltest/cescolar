@@ -43,7 +43,7 @@ import javax.faces.view.ViewScoped;
  * @author ihsa
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class MateriaBean extends BaseCrud<InscripcionAlumno> {
 
     @EJB

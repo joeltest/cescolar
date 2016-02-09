@@ -43,7 +43,7 @@ import javax.faces.view.ViewScoped;
  * @author ihsa
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     @EJB
@@ -220,7 +220,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
             getSelected().setIdGrado(new Grado(idGradoSeleccionado));
             getSelected().setIdGrupo(new Grupo(idGrupoSeleccionado));
             getSelected().setIdTurno(new Turno(idTurnoSeleccionado));
-
+            getSelected().setEliminado("False");
             persistir();
 
             for (AsignacionMateriaAlumno asignacion : listaAsignacionMateria) {
