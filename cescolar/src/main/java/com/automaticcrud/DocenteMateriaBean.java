@@ -142,7 +142,7 @@ public class DocenteMateriaBean extends BaseCrud<DocenteMateria> {
     }
 
     public void preparaModificacionInscripcion(ActionEvent e) {
-        prepararModificacion();
+        prepararModificacion(e);
         llenarTurnoItem();
 
     }

@@ -56,7 +56,7 @@ public class AlumnoFacade extends AbstractFacade<Alumno> implements AlumnoFacade
     
 //    @Override
 //    public List<Alumno> findAll(String numeroControl) {
-//         al = (Alumno) em.createQuery("SELECT a FROM Alumno a WHERE a.numeroControl ='"+numeroControl+"' AND a.eliminado = 'False'")
+//         al = (Alumno) em.createQuery("SELECT a FROM Alumno a WHERE a.| ='"+numeroControl+"' AND a.eliminado = 'False'")
 //                .getSingleResult();
 //    }
 //    

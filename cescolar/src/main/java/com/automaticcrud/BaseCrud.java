@@ -58,7 +58,7 @@ public abstract class BaseCrud<T> implements Serializable{
         System.out.println("Se guardo ");
     }
     
-    public void prepararModificacion(){
+    public void prepararModificacion(ActionEvent event){
         recogerIdSeleccionado();
         OPERACION = CrudActions.MODIFICAR;
     }
@@ -107,7 +107,7 @@ public abstract class BaseCrud<T> implements Serializable{
                 getService().create(selected);                        
                 break;
             case MODIFICAR : 
-                System.out.println("Operacion Insertar "+selected != null ? "es null":"no es null" );
+                System.out.println("Operacion modificar "+selected != null ? "es null":"no es null" );
                 System.out.println(("getService()  "+getService() != null) ? "servicio nukk":"no null");
                 getService().edit(selected);                        
                 break;

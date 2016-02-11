@@ -164,7 +164,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
     }
 
     public void preparaModificacionInscripcion(ActionEvent e) {
-        prepararModificacion();
+        prepararModificacion(e);
         llenarGradoItem();
         llenarGrupoItem();
         llenarTurnoItem();

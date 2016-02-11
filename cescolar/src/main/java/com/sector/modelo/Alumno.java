@@ -10,6 +10,8 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,6 +50,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Alumno implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+     @GeneratedValue(generator = "gen_seq", strategy = GenerationType.SEQUENCE)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -62,19 +65,19 @@ public class Alumno implements Serializable {
     @Column(name = "APELLIDO_MATERNO")
     private String apellidoMaterno;
     @Column(name = "ANO_NACIMIENTO")
-    private Integer anoNacimiento;
+    private String anoNacimiento;
     @Column(name = "MES_NACIMIENTO")
-    private Integer mesNacimiento;
+    private String mesNacimiento;
     @Column(name = "DIA_NACIMIENTO")
-    private Integer diaNacimiento;
+    private String diaNacimiento;
     @Column(name = "ESTADO")
-    private Integer estado;
+    private String estado;
     @Column(name = "CIUDAD")
-    private Integer ciudad;
+    private String ciudad;
     @Column(name = "COLONIA")
-    private Integer colonia;
+    private String colonia;
     @Column(name = "CALLE")
-    private Integer calle;
+    private String calle;
     @Column(name = "SEMESTRE_ACTUAL")
     private Integer semestreActual;
     @Column(name = "GENERO")
@@ -130,61 +133,7 @@ public class Alumno implements Serializable {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public Integer getAnoNacimiento() {
-        return anoNacimiento;
-    }
 
-    public void setAnoNacimiento(Integer anoNacimiento) {
-        this.anoNacimiento = anoNacimiento;
-    }
-
-    public Integer getMesNacimiento() {
-        return mesNacimiento;
-    }
-
-    public void setMesNacimiento(Integer mesNacimiento) {
-        this.mesNacimiento = mesNacimiento;
-    }
-
-    public Integer getDiaNacimiento() {
-        return diaNacimiento;
-    }
-
-    public void setDiaNacimiento(Integer diaNacimiento) {
-        this.diaNacimiento = diaNacimiento;
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
-    }
-
-    public Integer getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(Integer ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public Integer getColonia() {
-        return colonia;
-    }
-
-    public void setColonia(Integer colonia) {
-        this.colonia = colonia;
-    }
-
-    public Integer getCalle() {
-        return calle;
-    }
-
-    public void setCalle(Integer calle) {
-        this.calle = calle;
-    }
 
     public Integer getSemestreActual() {
         return semestreActual;
@@ -258,6 +207,62 @@ public class Alumno implements Serializable {
     @Override
     public String toString() {
         return "com.sector.modelo.Alumno[ id=" + id + " ]";
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public String getAnoNacimiento() {
+        return anoNacimiento;
+    }
+
+    public void setAnoNacimiento(String anoNacimiento) {
+        this.anoNacimiento = anoNacimiento;
+    }
+
+    public String getMesNacimiento() {
+        return mesNacimiento;
+    }
+
+    public void setMesNacimiento(String mesNacimiento) {
+        this.mesNacimiento = mesNacimiento;
+    }
+
+    public String getDiaNacimiento() {
+        return diaNacimiento;
+    }
+
+    public void setDiaNacimiento(String diaNacimiento) {
+        this.diaNacimiento = diaNacimiento;
     }
     
 }

@@ -9,140 +9,214 @@
     <body>
 
         <ui:composition template="./../WEB-INF/templates/template.xhtml">
+            <ui:param name="nameFormCrud" value="formABCAlumnos"/>
+            <ui:param name="uiFormDatatable" value="datatableAlumnos"/>
+            <ui:param name="witgedvarPopup" value="popNuevoAlumno"/>
 
             <ui:define name="titulo">               
-                 <ui:include src="dashboard_catalogo.xhtml"/>
-                ABC ALUMNOS
-               
+                <ui:include src="dashboard_catalogo.xhtml"/>
+                ALTA/BAJA/MODIFICACIÓN  ALUMNOS
+
             </ui:define>
-              <ui:define name="sidebar">
-                  <ui:include src="../menuLateral_admin.xhtml"/>
+            <ui:define name="sidebar">
+                <ui:include src="../menuLateral_admin.xhtml"/>
             </ui:define>
             <ui:define name="content">
+                <li class="list-group-item">
+                    <p:commandLink value="Nuevo Alumno"
+                                   styleClass="btn btn-info"
+                                   oncomplete="PF('#{witgedvarPopup}').show();"
+                                   process="@this"
+                                   update="#{nameFormCrud}"
+                                   actionListener="#{alumnoBean.preprarNuevoRegistro()}"
+                                   immediate="true"
+                                   >
+
+                    </p:commandLink>
+                </li>
                 <p:messages />
-                <div class="row">
-                    <h:form>
-                        <h:panelGrid columns="5">
-                            <h:outputLabel value="No. de Control :"/>
-                            <p:inputText value="#{incripcionBean.numeroControl}"
-                                         />
+                <h:form id="#{uiFormDatatable}">
+                    <h:panelGrid columns="5">
+                        <h:outputLabel value="No. de Control :"/>
+                        <p:inputText
+                            />
+                        <h:outputLabel value="Curso :"/>
+                        <p:selectOneMenu                              
+                            >
+                            <p:ajax update="@this"
+                                    process="@this"
+                                    />
+                            <f:validator validatorId="combo.requerido"/>
+                            <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
+                            <f:selectItems value="#{incripcionBean.listaCursoItems}"
+                                           />
+                        </p:selectOneMenu>
+                        <p:commandLink value="Buscar.."
+                                       styleClass="btn btn-primary"
+                                       ajax="false"
+                                       />
 
-                            <h:outputLabel value="Curso :"/>
-                            <p:selectOneMenu value="#{incripcionBean.idCursoSeleccionado}"                                         
-                                             >
-                                <p:ajax update="@this"
-                                        process="@this"
-                                        />
-                                <f:validator validatorId="combo.requerido"/>
-                                <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
-                                <f:selectItems value="#{incripcionBean.listaCursoItems}"
-                                               />
-                            </p:selectOneMenu>
-                            <p:commandLink value="Buscar.."
-                                           actionListener="#{incripcionBean.buscarAlumnoPorNumeroControl(eventi)}"
-                                           styleClass="btn btn-primary"
-                                           ajax="false"
+                    </h:panelGrid>
+
+                    <p:dataTable value="#{alumnoBean.allEntidades}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column headerText="No. control">                             
+                            <p:outputLabel value="#{item.numeroControl}" 
                                            />
 
-                        </h:panelGrid>
-                        <br/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <p:outputLabel value="#{item.nombre}"
 
-                        <div class="col col-md-3">
-                            <p:commandLink value="Modificar datos de alumno"
-                                           styleClass="btn btn-primary"
-                                           rendered="#{not empty incripcionBean.alumno}"                                           
-                                           ajax="false"
                                            />
-                            <h:panelGrid columns="2" rendered="#{not empty incripcionBean.alumno}">
-                                <h:outputLabel value="Numero de control :"/>
-                                <h:outputText value="#{incripcionBean.alumno.numeroControl}"/>
-                                <h:outputLabel value="Nombre :"/>
-                                <h:outputText value="#{incripcionBean.alumno.nombre}"/>
-                                <h:outputLabel value="Apellido paterno :"/>
-                                <h:outputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
-                                <h:outputLabel value="Apellido materno :"/>
-                                <h:outputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
-                                <h:outputLabel value="Fecha Nac.:"/>
-                                <h:panelGrid columns="3">
-                                    <h:outputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
-                                    <h:outputText value="#{incripcionBean.alumno.mesNacimiento}/"/>
-                                    <h:outputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+                        </p:column>
+                        <p:column headerText="A. Paterno">
+                            <p:outputLabel value="#{item.apellidoPaterno}"
 
-                                </h:panelGrid>
-                                <h:outputLabel value="Semestre actual :"/>
-                                <h:outputText value="#{incripcionBean.alumno.semestreActual}"/>
-                                <h:outputLabel value="Ciudad :"/>
-                                <h:outputText value="#{incripcionBean.alumno.ciudad}"/>
-                                <h:outputLabel value="Estado :"/>
-                                <h:outputText value="#{incripcionBean.alumno.estado}"/>
-                                <h:outputLabel value="Colonia :"/>
-                                <h:outputText value="#{incripcionBean.alumno.colonia}"/>
-                                <h:outputLabel value="Calle :"/>
-                                <h:outputText value="#{incripcionBean.alumno.calle}"/>
-                            </h:panelGrid>   
-                        </div>
+                                           />
+                        </p:column>
+                        <p:column headerText="A. Materno">
+                            <p:outputLabel value="#{item.apellidoPaterno}"
 
-                    </h:form>
-                </div>
+                                           />
+                        </p:column>
+                        <p:column headerText="Fe. Nac.">
+                            <p:outputLabel value="#{item.diaNacimiento}"
+
+                                           />
+                            /
+                            <p:outputLabel value="#{item.mesNacimiento}"
+
+                                           />
+                            /
+                            <p:outputLabel value="#{item.anoNacimiento}"
+
+                                           />
+                        </p:column>
+                        <p:column headerText="Domicilio">
+                            <p:outputLabel value="#{item.calle}"
+                                           />
+                            <p:outputLabel value="#{item.colonia}"
+                                           />
+                            <p:outputLabel value="#{item.estado}"
+                                           />
+                            <p:outputLabel value="#{item.ciudad}"
+                                           />
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="Modificar" 
+                                           actionListener="#{alumnoBean.prepararModificacion(event)}"
+                                           update="@this,:#{nameFormCrud}"
+                                           process="@this,:#{nameFormCrud}"
+                                           oncomplete="PF('#{witgedvarPopup}').show();"
+                                           >
+                                <f:param name="idParam" value="#{item.id}"/>
+
+                            </p:commandLink>
+
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="Eliminar"
+                                           update="@this,:#{nameFormCrud}"
+                                           actionListener="#{alumnoBean.prepararEliminacion(event)}"
+                                           oncomplete="PF('#{witgedvarPopup}').show();"
+                                           >
+                                <f:param name="idParam" value="#{item.id}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="Detalle"
+                                           update="@this,:#{nameFormCrud}"
+                                           process="@this,:#{nameFormCrud}"
+                                           actionListener="#{alumnoBean.preprarDetalle(event)}"
+                                           oncomplete="PF('#{witgedvarPopup}').show();"
+                                           >
+                                <f:param name="idParam" value="#{item.id}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
 
 
-                <h:form id="formNuevo">
-                    <p:growl id="messages" showDetail="true" />
-                    <p:dialog header="Incripción" 
-                              widgetVar="popNuevoAlumno" 
+                </h:form>
+
+                <h:form id="#{nameFormCrud}">
+                    <p:dialog header="Alumno (#{alumnoBean.OPERACION})" 
+                              widgetVar="#{witgedvarPopup}" 
                               modal="true"
                               resizable="false"
                               draggable="false"
                               minHeight="40">
                         <div class="panel panel-body">
                             <div class="row">
+                                <h:panelGrid columns="2" >
 
-                                <h:outputLabel value="Numero de control :"/>
-                                <p:inputText value="#{incripcionBean.alumno.numeroControl}"/>
-                                <h:outputLabel value="Nombre :"/>
-                                <p:inputText value="#{incripcionBean.alumno.nombre}"/>
-                                <h:outputLabel value="Apellido paterno :"/>
-                                <p:inputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
-                                <h:outputLabel value="Apellido materno :"/>
-                                <p:inputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
-                                <h:outputLabel value="Fecha Nac.:"/>                                                           
-                                <h:panelGrid columns="3">
-                                    <p:inputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
-                                    <p:inputText value="#{incripcionBean.alumno.mesNacimiento}/"/>
-                                    <p:inputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+                                    <h:outputLabel value="Numero de control :"/>
+                                    <p:inputText value="#{alumnoBean.selected.numeroControl}"/>
+                                    <h:outputLabel value="Nombre :"/>
+                                    <p:inputText value="#{alumnoBean.selected.nombre}" styleClass="form-control"/>
+                                    <h:outputLabel value="Apellido paterno :"/>
+                                    <p:inputText value="#{alumnoBean.selected.apellidoPaterno}" styleClass="form-control"/>
+                                    <h:outputLabel value="Apellido materno :"/>
+                                    <p:inputText value="#{alumnoBean.selected.apellidoMaterno}" styleClass="form-control"/>
+                                    <h:outputLabel value="Fecha Nac.:"/>                                                           
+                                    <h:panelGrid columns="5">
+                                        <p:inputText value="#{alumnoBean.selected.diaNacimiento}" maxlength="2"/>/
+                                        <p:inputText value="#{alumnoBean.selected.mesNacimiento}" maxlength="2"/>/
+                                        <p:inputText value="#{alumnoBean.selected.anoNacimiento}" maxlength="4"/>
+                                    </h:panelGrid>
+                                    <h:outputLabel value="Semestre actual :"/>
+                                    <p:inputText value="#{alumnoBean.selected.semestreActual}" styleClass="form-control"/>
+                                    <h:outputLabel value="Ciudad :"/>
+                                    <p:inputText value="#{alumnoBean.selected.ciudad}" styleClass="form-control"/>
+                                    <h:outputLabel value="Estado :"/>
+                                    <p:inputText value="#{alumnoBean.selected.estado}" styleClass="form-control"/>
+                                    <h:outputLabel value="Colonia :"/>
+                                    <p:inputText value="#{alumnoBean.selected.colonia}" styleClass="form-control"/>
+                                    <h:outputLabel value="Calle :"/>
+                                    <p:inputText value="#{alumnoBean.selected.calle}" styleClass="form-control"/>
                                 </h:panelGrid>
-                                <h:outputLabel value="Semestre actual :"/>
-                                <p:inputText value="#{incripcionBean.alumno.semestreActual}"/>
-                                <h:outputLabel value="Ciudad :"/>
-                                <p:inputText value="#{incripcionBean.alumno.ciudad}"/>
-                                <h:outputLabel value="Estado :"/>
-                                <p:inputText value="#{incripcionBean.alumno.estado}"/>
-                                <h:outputLabel value="Colonia :"/>
-                                <p:inputText value="#{incripcionBean.alumno.colonia}"/>
-                                <h:outputLabel value="Calle :"/>
-                                <p:inputText value="#{incripcionBean.alumno.calle}"/>
-
 
                             </div>                          
                             <div class="row text-center">
                                 <p:commandLink value="Guardar"
-                                               actionListener="#{incripcionBean.guardarInscripcion(e)}"
+                                               actionListener="#{alumnoBean.guardar(event)}"
                                                ajax="false"
-                                               oncomplete="PF('popupInscripcion').hide();"
+                                               oncomplete="PF('#{witgedvarPopup}').hide();"
+                                               rendered="#{alumnoBean.OPERACION eq 'INSERTAR'}"
                                                styleClass="btn btn-primary btn-lg">
+
+                                </p:commandLink>
+                                <p:commandLink value="Modificar"
+                                               actionListener="#{alumnoBean.modificar(e)}"
+                                               ajax="false"
+                                               oncomplete="PF('#{witgedvarPopup}').hide();"
+                                               rendered="#{alumnoBean.OPERACION eq 'MODIFICAR'}"
+                                               styleClass="btn btn-success btn-lg">
+
+                                </p:commandLink>
+                                <p:commandLink value="Eliminar"
+                                               actionListener="#{alumnoBean.eliminar(e)}"
+                                               ajax="false"
+                                               oncomplete="PF('#{witgedvarPopup}').hide();"
+                                               rendered="#{alumnoBean.OPERACION eq 'ELIMINAR'}"
+                                               styleClass="btn btn-danger btn-lg">
 
                                 </p:commandLink>
                                 <p:commandLink  
                                     process="@form"
                                     styleClass="btn btn-default btn-lg"
                                     ajax="false"
-                                    onclick="PF('popupInscripcion').hide();"
+                                    onclick="PF('#{witgedvarPopup}').hide();"
                                     value="Cancelar"/>
 
                             </div>
                         </div>
                     </p:dialog>
                 </h:form>
+
             </ui:define>
 
         </ui:composition>
