@@ -54,6 +54,18 @@ public class Materia implements Serializable {
     private Collection<DocenteMateria> docenteMateriaCollection;
     @OneToMany(mappedBy = "idMateria")
     private Collection<AsignacionMateriaAlumno> asignacionMateriaAlumnoCollection;
+    
+    @JoinColumn(name = "ID_TURNO", referencedColumnName = "ID")
+    @ManyToOne
+    private Turno idTurno;
+  
+    @JoinColumn(name = "ID_curso", referencedColumnName = "ID")
+    @ManyToOne
+    private Turno idCurso;
+  
+    @JoinColumn(name = "ID_DOCENTE", referencedColumnName = "ID")
+    @ManyToOne
+    private Docente idDocente;
 
     public Materia() {
     }
@@ -135,6 +147,30 @@ public class Materia implements Serializable {
     @Override
     public String toString() {
         return "com.sector.modelo.Materia[ id=" + id + " ]";
+    }
+
+    public Turno getIdTurno() {
+        return idTurno;
+    }
+
+    public void setIdTurno(Turno idTurno) {
+        this.idTurno = idTurno;
+    }
+
+    public Turno getIdCurso() {
+        return idCurso;
+    }
+
+    public void setIdCurso(Turno idCurso) {
+        this.idCurso = idCurso;
+    }
+
+    public Docente getIdDocente() {
+        return idDocente;
+    }
+
+    public void setIdDocente(Docente idDocente) {
+        this.idDocente = idDocente;
     }
     
 }
