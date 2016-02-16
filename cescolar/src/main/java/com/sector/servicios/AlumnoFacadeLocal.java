@@ -21,5 +21,6 @@ public interface AlumnoFacadeLocal extends FacadeLocal<Alumno>{
     
     Alumno findNumeroControl(String comodin);
     
+    List<Alumno> listaAlumnos();
     
 }

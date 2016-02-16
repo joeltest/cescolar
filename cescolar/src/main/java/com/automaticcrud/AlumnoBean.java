@@ -26,6 +26,7 @@ import com.sector.servicios.SucursalFacadeLocal;
 import com.sector.servicios.TurnoFacadeLocal;
 import com.sector.utils.FacesUtils;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +64,7 @@ public class AlumnoBean extends BaseCrud<Alumno> {
     public void init() {
         try {
             preprarNuevoRegistro();
-            
+            llenarLista();
         } catch (InstantiationException ex) {
             Logger.getLogger(AlumnoBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -71,10 +72,10 @@ public class AlumnoBean extends BaseCrud<Alumno> {
         }
     }
 
-    private void llenarLista(){
-        listaAlumno = servicio.findAll();
+    private void llenarLista() {
+        listaAlumno = servicio.listaAlumnos();
     }
-    
+
     public void eliminacion(ActionEvent event) {
         prepararEliminacion(event);
         getSelected().setEliminado("True");
@@ -88,20 +89,19 @@ public class AlumnoBean extends BaseCrud<Alumno> {
 
     }
 
-
     public void prepararNueva(ActionEvent ev) throws InstantiationException, IllegalAccessException {
 
         preprarNuevoRegistro();
 
     }
-    
-    
-    public void eliminar(ActionEvent e){
-        
+
+    public void eliminar(ActionEvent e) {
+
         getSelected().setEliminado("True");
-        
+
         servicio.edit(getSelected());
         servicio.remove(getSelected());
+        llenarLista();
     }
 
     public void preparaModificacion(ActionEvent e) {
@@ -109,13 +109,18 @@ public class AlumnoBean extends BaseCrud<Alumno> {
 
     }
 
+    public void guardarAlumno(ActionEvent e) {
+        getSelected().setEliminado("False");
+//        getSelected().setGenero(new Date());
+        
+        guardar(e);
+    }
+
     public void modificar(ActionEvent e) {
 
         persistir();
-
+        llenarLista();
     }
-
-
 
     //obtener combo de Turno
 //    public void llenarTurnoItem() {
@@ -138,11 +143,11 @@ public class AlumnoBean extends BaseCrud<Alumno> {
 //            }
 //        }
 //    }
-
     @Override
     protected FacadeLocal<Alumno> getService() {
         return servicio;
     }
+
     public String getNumeroControl() {
         return numeroControl;
     }
@@ -150,7 +155,6 @@ public class AlumnoBean extends BaseCrud<Alumno> {
     public void setNumeroControl(String numeroControl) {
         this.numeroControl = numeroControl;
     }
-
 
     public List<Materia> getListaMateria() {
         return listaMateria;

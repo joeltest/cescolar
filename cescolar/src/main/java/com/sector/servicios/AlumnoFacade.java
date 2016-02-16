@@ -60,4 +60,10 @@ public class AlumnoFacade extends AbstractFacade<Alumno> implements AlumnoFacade
 //                .getSingleResult();
 //    }
 //    
+
+    @Override
+    public List<Alumno> listaAlumnos() {
+        return em.createQuery("SELECT a FROM Alumno a WHERE a.eliminado = 'False'")
+                .getResultList();
+    }
 }

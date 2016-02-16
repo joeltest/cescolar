@@ -58,7 +58,7 @@
 
                     </h:panelGrid>
 
-                    <p:dataTable value="#{alumnoBean.allEntidades}"
+                    <p:dataTable value="#{alumnoBean.listaAlumno}"
                                  var="item"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -120,8 +120,9 @@
                         </p:column>
                         <p:column>
                             <p:commandLink value="Eliminar"
-                                           update="@this,:#{nameFormCrud}"
                                            actionListener="#{alumnoBean.prepararEliminacion(event)}"
+                                           update="@this,:#{nameFormCrud}"
+                                           process="@this,:#{nameFormCrud}"
                                            oncomplete="PF('#{witgedvarPopup}').show();"
                                            >
                                 <f:param name="idParam" value="#{item.id}"/>
