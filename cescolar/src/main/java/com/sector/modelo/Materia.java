@@ -59,7 +59,7 @@ public class Materia implements Serializable {
     @ManyToOne
     private Turno idTurno;
   
-    @JoinColumn(name = "ID_curso", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_CURSO", referencedColumnName = "ID")
     @ManyToOne
     private Turno idCurso;
   

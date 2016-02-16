@@ -87,6 +87,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
     private List<SelectItem> listaGradoItems;
     private List<SelectItem> listaGrupoItems;
     private List<SelectItem> listaTurnoItems;
+    private List<SelectItem> listaMateriasItems;
 
     private int idAlumnoSeleccionado;
     private int idCursoSeleccionado;
@@ -481,4 +482,12 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 //    public void setInscripcionAlumno(InscripcionAlumno inscripcionAlumno) {
 //        this.inscripcionAlumno = inscripcionAlumno;
 //    }
+
+    public List<SelectItem> getListaMateriasItems() {
+        return listaMateriasItems;
+    }
+
+    public void setListaMateriasItems(List<SelectItem> listaMateriasItems) {
+        this.listaMateriasItems = listaMateriasItems;
+    }
 }
