@@ -85,7 +85,7 @@
                         </h:panelGrid>   
                         <p:commandLink value="Modificar datos de alumno"
                                        styleClass="btn btn-primary"
-                                       rendered="#{not empty incripcionBean.alumno}"                                           
+                                       rendered="#{false}"                                           
                                        ajax="false"
                                        />
                     </div>
@@ -93,52 +93,16 @@
                     <div class="row">
 
                         <p:tabView>
-                            <p:tab title="Materias">
-                                <ui:fragment rendered="#{not empty incripcionBean.alumno}">
-                                    <div  class=" row text-center"> <h3>Materias del curso </h3></div>
-                                    <div class="btn-group" role="group" aria-label="...">
-
-                                        <p:commandLink value="(+)Agregar Materia.."                                                      
-                                                       styleClass="btn btn-primary"
-                                                       ajax="false"
-                                                       />
-                                    </div>
-                                    <p:dataTable  id="dataMateriasRead"
-                                                  var="data" value="#{incripcionBean.listaAsignacionMateria}" rows="10"
-                                                  paginator="true"
-                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                  emptyMessage="No hay materias"
-                                                  styleClass="table"
-                                                  rowsPerPageTemplate="5,10,15">
-
-                                        <p:column headerText="Materia">
-                                            <h:outputText value="#{data.idMateria.nombre}"/>
-                                        </p:column>
-                                        <p:column headerText="Imparte">
-                                            <h:outputLabel value="#{data.idMateria.idDocente.nombre}"/>
-                                        </p:column>
-                                        <p:column headerText="Repite">
-                                            <h:outputLabel value="#{data.repite eq 'True' ? 'NA':''}"/>
-                                        </p:column>
-                                        <p:column headerText="Observaciones">
-                                            <h:outputLabel value="#{data.observaciones}"/>
-                                        </p:column>
-                                        <p:column >
-                                            <p:commandLink value="Quitar"
-
-                                                           />
-                                        </p:column>
-                                    </p:dataTable>
-                                </ui:fragment>
-                            </p:tab>
                             <p:tab title="Inscripción">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <p:commandLink value="Iniciar Inscripción"
                                                    actionListener="#{incripcionBean.prepararNuevaInscripcion(ev)}"
                                                    styleClass="btn btn-primary"
                                                    oncomplete="PF('popupInscripcion').show();"
-                                                   update=":formInscripcion"
+                                                   update="@this,:formInscripcion"
+                                                   process="@this"
                                                    rendered="#{empty incripcionBean.selected}"
+                                                   immediate="true"
                                                    >
 
                                     </p:commandLink>   
@@ -150,7 +114,7 @@
                                                    update=":formInscripcion"
                                                    rendered="#{(not empty incripcionBean.selected) and (not empty incripcionBean.alumno)}"
                                                    >
-
+                                        
                                     </p:commandLink>    
 
                                     <p:commandLink value="Eliminar Incripción"
@@ -183,6 +147,46 @@
                                 </ui:fragment>                                        
 
                             </p:tab>
+                            <p:tab title="Materias">
+                                <ui:fragment rendered="#{not empty incripcionBean.alumno}">
+                                    <div  class=" row text-center"> <h3>Materias del curso </h3></div>
+                                    <div class="btn-group" role="group" aria-label="...">
+
+                                        <p:commandLink value="(+)Agregar Materia.."                                                      
+                                                       styleClass="btn btn-primary"
+                                                       ajax="false"
+                                                       rendered="#{not empty incripcionBean.selected}"
+                                                       />
+                                    </div>
+                                    <p:dataTable  id="dataMateriasRead"
+                                                  var="data" value="#{incripcionBean.listaAsignacionMateria}" rows="10"
+                                                  paginator="true"
+                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                  emptyMessage="No hay materias"
+                                                  styleClass="table"
+                                                  rowsPerPageTemplate="5,10,15">
+
+                                        <p:column headerText="Materia">
+                                            <h:outputText value="#{data.idMateria.nombre}"/>
+                                        </p:column>
+                                        <p:column headerText="Imparte">
+                                            <h:outputLabel value="#{data.idMateria.idDocente.nombre}"/>
+                                        </p:column>
+                                        <p:column headerText="Repite">
+                                            <h:outputLabel value="#{data.repite eq 'True' ? 'NA':''}"/>
+                                        </p:column>
+                                        <p:column headerText="Observaciones">
+                                            <h:outputLabel value="#{data.observaciones}"/>
+                                        </p:column>
+                                        <p:column >
+                                            <p:commandLink value="Quitar"
+
+                                                           />
+                                        </p:column>
+                                    </p:dataTable>
+                                </ui:fragment>
+                            </p:tab>
+
                         </p:tabView>
                     </div>
 
@@ -197,7 +201,40 @@
                               resizable="false"
                               draggable="false"
                               minHeight="40">
+
                         <div class="panel panel-body">
+                            <div class="row">
+                                <h:panelGrid columns="6" rendered="#{ empty incripcionBean.alumno}">
+                                    alumno null
+                                </h:panelGrid>
+                                <h:panelGrid columns="6" rendered="#{not empty incripcionBean.alumno}">
+                                    <h:outputLabel value="Numero de control :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.numeroControl}" styleClass="bg-primary"/>
+                                    <h:outputLabel value="Nombre :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.nombre}"/>
+                                    <h:outputLabel value="Apellido paterno :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.apellidoPaterno}"/>
+                                    <h:outputLabel value="Apellido materno :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.apellidoMaterno}"/>
+                                    <h:outputLabel value="Fecha Nac.:"/>
+                                    <h:panelGrid columns="3">
+                                        <h:outputText value="#{incripcionBean.alumno.diaNacimiento}/"/>
+                                        <h:outputText value="#{incripcionBean.alumno.mesNacimiento}/"/>
+                                        <h:outputText value="#{incripcionBean.alumno.anoNacimiento}"/>
+
+                                    </h:panelGrid>
+                                    <h:outputLabel value="Semestre actual :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.semestreActual}"/>
+                                    <h:outputLabel value="Ciudad :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.ciudad}"/>
+                                    <h:outputLabel value="Estado :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.estado}"/>
+                                    <h:outputLabel value="Colonia :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.colonia}"/>
+                                    <h:outputLabel value="Calle :"/>
+                                    <h:outputText value="#{incripcionBean.alumno.calle}"/>
+                                </h:panelGrid>   
+                            </div>
                             <div class="row">
                                 <h:outputLabel value="Grado :"/>
                                 <p:selectOneMenu value="#{incripcionBean.idGradoSeleccionado}"           
@@ -211,7 +248,6 @@
                                     <f:selectItems value="#{incripcionBean.listaGradoItems}"
                                                    />
                                 </p:selectOneMenu>
-                                <br/>
                                 <h:outputLabel value="Grupo :"/>
                                 <p:selectOneMenu value="#{incripcionBean.idGrupoSeleccionado}"                                         
                                                  >
@@ -223,7 +259,6 @@
                                     <f:selectItems value="#{incripcionBean.listaGrupoItems}"
                                                    />
                                 </p:selectOneMenu>
-                                <br/>
                                 <h:outputLabel value="Turno :"/>
                                 <p:selectOneMenu value="#{incripcionBean.idTurnoSeleccionado}"                                         
                                                  >

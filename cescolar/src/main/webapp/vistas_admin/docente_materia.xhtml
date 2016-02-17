@@ -14,91 +14,67 @@
                 DOCENTE MATERIA
             </ui:define>
             <ui:define name="sidebar">
-                 <ui:include src="../menuLateral_admin.xhtml"/>
+                <ui:include src="../menuLateral_admin.xhtml"/>
             </ui:define>
-                
+
             <ui:define name="content">
                 <p:messages />
                 <div class="row">
                     <h:form id="principalDocenteMateria">
                         <h:panelGrid columns="5">
-                            <h:outputLabel value="Docente :"/>                           
-                            <p:selectOneMenu value="#{docenteMateriaBean.idDocentreSeleccionado}"           
-                                             valueChangeListener="#{docenteMateriaBean.valueChangeDocente}"
-                                             >
-                                <p:ajax update="@form,dataMateriasDocenteRead"
-                                        process="@form"
-                                        />
-                                <f:validator validatorId="combo.requerido"/>
-                                <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
-                                <f:selectItems value="#{docenteMateriaBean.listaDocentesItems}"
-                                               />
-                            </p:selectOneMenu>
-                            
+
+
                             <h:outputLabel value="Turno :"/>               
-                            <p:selectOneMenu value="#{docenteMateriaBean.idTurnoSeleccionado}"           
-                                             valueChangeListener="#{docenteMateriaBean.valueChangeTurno}"
+                            <p:selectOneMenu value="#{docenteMateriaBean.idGrado}"           
+                                             valueChangeListener="#{docenteMateriaBean.valueChangeGrado}"
                                              >
                                 <p:ajax update="@form,dataMateriasDocenteRead"
                                         process="@form"
                                         />
                                 <f:validator validatorId="combo.requerido"/>
                                 <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
-                                <f:selectItems value="#{docenteMateriaBean.listaTurnoItems}"
+                                <f:selectItems value="#{docenteMateriaBean.listaGradoItems}"
                                                />
                             </p:selectOneMenu>
 
                         </h:panelGrid>
                         <br/>
 
-                        <div class="col col-md-3">
-                            <p:commandLink value="Modificar datos de docente"
-                                           styleClass="btn btn-primary"
-                                           rendered="#{not empty docenteMateriaBean.docente}"                                           
-                                           ajax="false"
-                                           />
-                            <h:panelGrid columns="2" rendered="#{not empty docenteMateriaBean.docente}">
-                                <h:outputLabel value="Numero de docente :"/>
-                                <h:outputText value="#{docenteMateriaBean.docente.id}"/>
-                                <h:outputLabel value="Nombre :"/>
-                                <h:outputText value="#{docenteMateriaBean.docente.nombre}"/>
-                                <h:outputLabel value="Apellidos :"/>
-                                <h:outputText value="#{docenteMateriaBean.docente.apellidos}"/>
-                                <h:outputLabel value="Domicilio :"/>
-                                <h:outputText value="#{docenteMateriaBean.docente.domicilio}"/>
-                                <h:outputLabel value="Estudios :"/>
-                                <h:outputText value="#{docenteMateriaBean.docente.estudios}"/>
-                            </h:panelGrid>   
-                        </div>
+
                         <div class="col col-md-9">
-                            <p:commandLink value="Asignar materia.. "
-                                           actionListener="#{docenteMateriaBean.prepararNuevaAsignacion(ev)}"
-                                           styleClass="btn btn-success"
-                                           oncomplete="PF('popupAsignacionDocente').show();"
-                                           update=":formAsignacionDocente"
-                                           >
 
-                            </p:commandLink>   
-
-                                                       
                             <div class="row">
-                                <ui:fragment rendered="#{not empty docenteMateriaBean.docente}">
-                                    Materias asignadas
-                                    <p:dataTable  id="dataMateriasDocenteRead"
-                                                  var="data" value="#{docenteMateriaBean.listaDocenteMateria}" rows="10"
-                                                  paginator="true"
-                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                  emptyMessage="No hay materias"
-                                                  styleClass="table"
-                                                  rowsPerPageTemplate="5,10,15">
-                                        <p:column headerText="Materia">
-                                            <h:outputText value="#{data.idMateria.nombre}"/>
-                                        </p:column>
-                                        <p:column headerText="Turno">
-                                            <h:outputLabel value="#{data.idTurno.nombre}"/>
-                                        </p:column>
-                                    </p:dataTable>
-                                </ui:fragment>
+                                Materias asignadas
+                                <p:dataTable  id="dataMateriasDocenteRead"
+                                              var="data" value="#{docenteMateriaBean.listaMateria}" rows="10"
+                                              paginator="true"
+                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                              emptyMessage="No hay materias"
+                                              styleClass="table"
+                                              rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Materia">
+                                        <h:outputText value="#{data.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Turno">
+                                        <h:outputLabel value="#{data.idTurno.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Docente">
+                                        <h:outputLabel value="#{data.idDocente.estudios} /"/>
+                                        <h:outputLabel value="#{data.idDocente.nombre} "/>
+                                        <h:outputLabel value="#{data.idDocente.apellidos}"/>
+                                        
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandLink value="Asignar Docente.. "
+                                                       actionListener="#{docenteMateriaBean.prepararNuevaAsignacion(ev)}"
+                                                       styleClass="btn btn-success"
+                                                       oncomplete="PF('popupAsignacionDocente').show();"
+                                                       update=":formAsignacionDocente"
+                                                       >
+                                            <f:param name="idParam" value="#{data.id}"/>
+                                        </p:commandLink>   
+                                    </p:column>
+                                </p:dataTable>
                             </div>
                         </div>
 
@@ -115,19 +91,28 @@
                               draggable="false"
                               minHeight="40">
                         <div class="panel panel-body">
-                            <div class="row">
-                                <h:outputLabel value="Turno :"/>
-                                <p:selectOneMenu value="#{docenteMateriaBean.idMateriaSeleccionado}"           
-                                                 valueChangeListener="#{docenteMateriaBean.valueChangeMateria}"
+                            <div class="row"> 
+                                <h:outputLabel value="Docente :"/>               
+                                <p:selectOneMenu value="#{docenteMateriaBean.idDocentreSeleccionado}"           
                                                  >
                                     <p:ajax update="@this"
                                             process="@this"
                                             />
                                     <f:validator validatorId="combo.requerido"/>
                                     <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
-                                    <f:selectItems value="#{docenteMateriaBean.listaMateriaItems}"
+                                    <f:selectItems value="#{docenteMateriaBean.listaDocentesItems}"
                                                    />
                                 </p:selectOneMenu>
+                            </div>
+                            <div class="row">                               
+                                    <h:panelGrid columns="2" rendered="#{not empty docenteMateriaBean.selected}">
+                                        <h:outputLabel value="Materia :"/>
+                                        <h:outputText value="#{docenteMateriaBean.selected.nombre}"/>
+                                        <h:outputLabel value="Grado :"/>
+                                        <h:outputText value="#{docenteMateriaBean.selected.grado.nombre}"/>
+                                        <h:outputLabel value="Turno :"/>
+                                        <h:outputText value="#{docenteMateriaBean.selected.idTurno.nombre}"/>
+                                    </h:panelGrid>  
                             </div>
                             <div class="row text-center">
                                 <p:commandLink value="Guardar"

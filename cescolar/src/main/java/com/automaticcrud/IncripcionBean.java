@@ -43,7 +43,7 @@ import javax.faces.view.ViewScoped;
  * @author ihsa
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     @EJB
@@ -54,7 +54,6 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
 //    @EJB
 //    private InscripcionAlumnoFacadeLocal inscripcionAlummnoService;
-
     @EJB
     private CursoFacadeLocal cursoService;
 
@@ -128,9 +127,9 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
     public void buscarAlumnoPorNumeroControl(ActionEvent eventi) {
         this.setAlumno(alummnoService.findNumeroControl(getNumeroControl()));
         if (alumno != null) {
-            
+
             this.setSelected(servicio.buscarInscripcionAlumno(this.alumno.getId(), idCursoSeleccionado));
-            
+
             //cargar las asignaturas 
             if (getSelected() != null) {
                 idGradoSeleccionado = getSelected().getIdGrado().getId();
@@ -145,27 +144,42 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
         }
     }
 
-    public void prepararNuevaInscripcion(ActionEvent ev) throws InstantiationException, IllegalAccessException {
+    public void prepararNuevaInscripcion(ActionEvent ev) {
 
-        preprarNuevoRegistro();
+        try {
+            preprarNuevoRegistro();
 
-        llenarGradoItem();
-        llenarGrupoItem();
-        llenarTurnoItem();
+            llenarGradoItem();
+            System.out.println("1");
+            llenarGrupoItem();
+            System.out.println("2");
+            llenarTurnoItem();
+            System.out.println("3");
 
-        //llenar las materias por grado 
+            //llenar las materias por grado 
+        } catch (InstantiationException ex) {
+            Logger.getLogger(IncripcionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(IncripcionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    
-    public void eliminarInscripcion(ActionEvent e){
-        
+
+    public void eliminarInscripcion(ActionEvent e) {
+
         getSelected().setEliminado("True");
-        
+
         servicio.edit(getSelected());
     }
 
     public void preparaModificacionInscripcion(ActionEvent e) {
-        prepararModificacion(e);
+//        prepararModificacion(e);
+        idGradoSeleccionado = getSelected().getIdGrado().getId();
+        idGrupoSeleccionado = getSelected().getIdGrupo().getId();
+        idTurnoSeleccionado = getSelected().getIdTurno().getId();
+        idAlumnoSeleccionado = alumno.getId();
+        this.listaAsignacionMateria = asignacionMateriAlumnoMateriaService.findAllPorInscripcionAlumno(getSelected().getId());
+        
+        this.setOPERACION(CrudActions.MODIFICAR);
         llenarGradoItem();
         llenarGrupoItem();
         llenarTurnoItem();
@@ -192,9 +206,9 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
         idGradoSeleccionado = (Integer) chan.getNewValue();
 
         if (getOPERACION() == CrudActions.MODIFICAR) {
-            
+
             this.listaAsignacionMateria = asignacionMateriAlumnoMateriaService.findAllPorInscripcionAlumno(getSelected().getId());
-        
+
         } else {
             //obtener el plan de materias para el grado seleccionado
             listaMateria = materiaService.findAllByGrado(idGradoSeleccionado);
@@ -268,7 +282,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     //obtener combo de Curso
     public void llenarCursoItem() {
-
+        System.out.println("llenarCursoItem");
         List<Curso> listaCurso = this.getCursoService().findAll();
 
         if (listaCurso != null && !listaCurso.isEmpty()) {
@@ -290,7 +304,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     //obtener combo de Grado
     public void llenarGradoItem() {
-
+        System.out.println("llenarGradoItem");
         List<Grado> listaGrado = this.getGradoService().findAll();
 
         if (listaGrado != null && !listaGrado.isEmpty()) {
@@ -312,7 +326,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     //obtener combo de grupo
     public void llenarGrupoItem() {
-
+        System.out.println("llenarGrupoItem");
         List<Grupo> listaGrupo = this.getGrupoService().findAll();
 
         if (listaGrupo != null && !listaGrupo.isEmpty()) {
@@ -334,6 +348,7 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 
     //obtener combo de Turno
     public void llenarTurnoItem() {
+        System.out.println("llenarTurnoItem");
 
         List<Turno> listaTurno = this.getTurnoService().findAll();
 
@@ -482,7 +497,6 @@ public class IncripcionBean extends BaseCrud<InscripcionAlumno> {
 //    public void setInscripcionAlumno(InscripcionAlumno inscripcionAlumno) {
 //        this.inscripcionAlumno = inscripcionAlumno;
 //    }
-
     public List<SelectItem> getListaMateriasItems() {
         return listaMateriasItems;
     }

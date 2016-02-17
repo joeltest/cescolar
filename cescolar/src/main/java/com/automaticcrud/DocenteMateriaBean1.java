@@ -8,14 +8,17 @@ package com.automaticcrud;
 import com.automaticcrud.generic.FacadeLocal;
 import com.sector.modelo.Alumno;
 import com.sector.modelo.Docente;
-import com.sector.modelo.Grado;
+import com.sector.modelo.DocenteMateria;
 import com.sector.modelo.Materia;
 import com.sector.modelo.Turno;
 import com.sector.servicios.AlumnoFacadeLocal;
+import com.sector.servicios.AsignacionMateriaAlumnoFacadeLocal;
 import com.sector.servicios.CursoFacadeLocal;
 import com.sector.servicios.DocenteFacadeLocal;
+import com.sector.servicios.DocenteMateriaFacadeLocal;
 import com.sector.servicios.GradoFacadeLocal;
 import com.sector.servicios.GrupoFacadeLocal;
+import com.sector.servicios.InscripcionAlumnoFacadeLocal;
 import com.sector.servicios.MateriaFacadeLocal;
 import com.sector.servicios.TurnoFacadeLocal;
 import com.sector.utils.FacesUtils;
@@ -37,11 +40,11 @@ import javax.faces.view.ViewScoped;
  * @author ihsa
  */
 @ManagedBean
-@SessionScoped
-public class DocenteMateriaBean extends BaseCrud<Materia> {
+@ViewScoped
+public class DocenteMateriaBean1 extends BaseCrud<DocenteMateria> {
 
     @EJB
-    private MateriaFacadeLocal servicio;
+    private DocenteMateriaFacadeLocal servicio;
 
     @EJB
     private AlumnoFacadeLocal alummnoService;
@@ -67,21 +70,22 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
 
     List<Alumno> listaAlumno;
     private List<Materia> listaMateria;
+    private List<DocenteMateria> listaDocenteMateria;
 
     private String numeroControl;
     private Docente docente;
+    private Materia materia;
 
     private List<SelectItem> listaDocentesItems;
     private List<SelectItem> listaTurnoItems;
     private List<SelectItem> listaMateriaItems;
-    private List<SelectItem> listaGradoItems;
 
-    private int idGrado;
+    private int idTurnoSeleccionado;
     private int idDocentreSeleccionado;
     private int idMateriaSeleccionado;
 
-    public DocenteMateriaBean() {
-        super(Materia.class);
+    public DocenteMateriaBean1() {
+        super(DocenteMateria.class);
     }
 
     @PostConstruct
@@ -89,15 +93,15 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
         try {
             preprarNuevoRegistro();
             idDocentreSeleccionado = -1;
-            setIdGrado(-1);
+            idTurnoSeleccionado = -1;
             idMateriaSeleccionado = -1;
             llenarTurnoItem();
             llenarDocentesItem();
-            llenarGradoItem();
+
         } catch (InstantiationException ex) {
-            Logger.getLogger(DocenteMateriaBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DocenteMateriaBean1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(DocenteMateriaBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DocenteMateriaBean1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -115,18 +119,18 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
 
     }
 
-    public void cargarListaMateriasPorGrado() {
+    public void cargarListaDocenteMateria() {
 
-       listaMateria =  materiaService.findAllByGrado(getIdGrado());
+        if (idDocentreSeleccionado != -1 && idTurnoSeleccionado != -1) {
+            this.listaDocenteMateria = servicio.findAllPorTurno(idDocentreSeleccionado, idTurnoSeleccionado);
+        }
     }
 
     public void prepararNuevaAsignacion(ActionEvent ev) throws InstantiationException, IllegalAccessException {
 
-        prepararModificacion(ev);
-        
-        idDocentreSeleccionado = getSelected().getIdDocente() != null ? getSelected().getIdDocente().getId(): -1;
-        
-        llenarDocentesItem();
+        preprarNuevoRegistro();
+        idMateriaSeleccionado = -1;
+        llenarMateriasItem();
 
     }
 
@@ -137,31 +141,45 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
         servicio.edit(getSelected());
     }
 
+    public void preparaModificacionInscripcion(ActionEvent e) {
+        prepararModificacion(e);
+        llenarTurnoItem();
+
+    }
+
     public void guardarAsignacion(ActionEvent e) {
-        getSelected().setIdDocente(new Docente(idDocentreSeleccionado));
-//        getSelected().setIdTurno(new Turno(idTurnoSeleccionado));
+        getSelected().setIdDocente(docente);
+        getSelected().setIdMateria(materia);
+        getSelected().setIdTurno(new Turno(idTurnoSeleccionado));
         getSelected().setEliminado("False");
         persistir();
-        
-         cargarListaMateriasPorGrado();
+         cargarListaDocenteMateria();
     }
 
     public void valueChangeDocente(ValueChangeEvent change) {
         idDocentreSeleccionado = (Integer) (change.getNewValue());
 
-//        docente = docenteService.find(idDocentreSeleccionado);
+        docente = docenteService.find(idDocentreSeleccionado);
 
-
-    }
-
-    public void valueChangeGrado(ValueChangeEvent change) {
-
-        setIdGrado((int) (Integer) (change.getNewValue()));
-
-        cargarListaMateriasPorGrado();
+        cargarListaDocenteMateria();
 
     }
 
+    public void valueChangeTurno(ValueChangeEvent change) {
+
+        idTurnoSeleccionado = (Integer) (change.getNewValue());
+
+        cargarListaDocenteMateria();
+
+    }
+
+    public void valueChangeMateria(ValueChangeEvent change) {
+
+        idMateriaSeleccionado = (Integer) (change.getNewValue());
+
+        this.materia = materiaService.find(idMateriaSeleccionado);
+
+    }
 
     public void llenarDocentesItem() {
 
@@ -226,33 +244,13 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
             }
         }
     }
-    public void llenarGradoItem() {
-
-        List<Grado> listaTurno = gradoService.findAll();
-
-        if (listaTurno != null && !listaTurno.isEmpty()) {
-
-            listaGradoItems = new ArrayList<>();
-
-            for (Grado obj : listaTurno) {
-
-                SelectItem item = new SelectItem();
-
-                item.setValue(obj.getId());
-
-                item.setLabel(obj.getNombre());
-
-                listaGradoItems.add(item);
-            }
-        }
-    }
 
     @Override
-    protected FacadeLocal<Materia> getService() {
+    protected FacadeLocal<DocenteMateria> getService() {
         return servicio;
     }
 
-    public MateriaFacadeLocal getServicio() {
+    public DocenteMateriaFacadeLocal getServicio() {
         return servicio;
     }
 
@@ -280,6 +278,14 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
         return listaTurnoItems;
     }
 
+    public int getIdTurnoSeleccionado() {
+        return idTurnoSeleccionado;
+    }
+
+    public void setIdTurnoSeleccionado(int idTurnoSeleccionado) {
+        this.idTurnoSeleccionado = idTurnoSeleccionado;
+    }
+
     public String getNumeroControl() {
         return numeroControl;
     }
@@ -304,6 +310,13 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
         this.idDocentreSeleccionado = idDocentreSeleccionado;
     }
 
+    public List<DocenteMateria> getListaDocenteMateria() {
+        return listaDocenteMateria;
+    }
+
+    public void setListaDocenteMateria(List<DocenteMateria> listaDocenteMateria) {
+        this.listaDocenteMateria = listaDocenteMateria;
+    }
 
     public List<SelectItem> getListaMateriaItems() {
         return listaMateriaItems;
@@ -337,20 +350,11 @@ public class DocenteMateriaBean extends BaseCrud<Materia> {
         this.idMateriaSeleccionado = idMateriaSeleccionado;
     }
 
-    public List<SelectItem> getListaGradoItems() {
-        return listaGradoItems;
+    public Materia getMateria() {
+        return materia;
     }
 
-    public void setListaGradoItems(List<SelectItem> listaGradoItems) {
-        this.listaGradoItems = listaGradoItems;
+    public void setMateria(Materia materia) {
+        this.materia = materia;
     }
-
-    public int getIdGrado() {
-        return idGrado;
-    }
-
-    public void setIdGrado(int idGrado) {
-        this.idGrado = idGrado;
-    }
-
 }
