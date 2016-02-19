@@ -20,6 +20,8 @@ public interface MateriaFacadeLocal extends FacadeLocal<Materia>{
     
     
     List<Materia> findAllByGrado(int idGrado);
+    
+    List<Materia> findAllByDocente(int idDocente);
 
 
     

@@ -17,5 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface CalificacionFacadeLocal extends FacadeLocal<Calificacion>{
 
+    List<Calificacion> listaCalificacionPorAsignacion(int idAsignacion);    
     
+    List<Calificacion> obtenerCardex(int idAsignacion);    
 }

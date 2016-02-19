@@ -111,6 +111,7 @@ public class AlumnoBean extends BaseCrud<Alumno> {
 
     public void guardarAlumno(ActionEvent e) {
         getSelected().setEliminado("False");
+        getSelected().setClave(numeroControl);
 //        getSelected().setGenero(new Date());
         
         guardar(e);

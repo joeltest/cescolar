@@ -18,6 +18,10 @@ import javax.ejb.Local;
 public interface AsignacionMateriaAlumnoFacadeLocal extends FacadeLocal<AsignacionMateriaAlumno>{
 
     List<AsignacionMateriaAlumno> findAllPorInscripcionAlumno(int idInscripcionAlumno);
+    
+    List<AsignacionMateriaAlumno> findAllPorInscripcionAlumno(int idMateria,int idCurso,int idGrado,int idGrupo, int idTurno);
+    
+    AsignacionMateriaAlumno findByInscripcionAlumno(int idAlumno,int idMateria,int idCurso,int idGrado,int idGrupo, int idTurno);
 
     
 }

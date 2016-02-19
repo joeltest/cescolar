@@ -35,5 +35,12 @@ public class MateriaFacade extends AbstractFacade<Materia> implements MateriaFac
                 .getResultList();
         return lista;
     }
+
+    @Override
+    public List<Materia> findAllByDocente(int idDocente) {
+           List<Materia> lista = em.createQuery("SELECT a FROM Materia a WHERE a.idDocente.id = "+idDocente)
+                .getResultList();
+           return lista;
+    }
     
 }

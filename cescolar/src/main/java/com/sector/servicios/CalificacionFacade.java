@@ -6,6 +6,7 @@
 package com.sector.servicios;
 
 import com.sector.modelo.Calificacion;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,19 @@ public class CalificacionFacade extends AbstractFacade<Calificacion> implements 
 
     public CalificacionFacade() {
         super(Calificacion.class);
+    }
+
+    @Override
+    public List<Calificacion> listaCalificacionPorAsignacion(int idAsignacion) {
+        return em.createQuery("SELECT c FROM Calificacion c WHERE c.asignacionMateriaAlumno.id = :idAsignacion AND c.eliminado = 'False'")
+                .setParameter("idAsignacion", idAsignacion)
+                .getResultList();
+                
+    }
+
+    @Override
+    public List<Calificacion> obtenerCardex(int idAsignacion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
