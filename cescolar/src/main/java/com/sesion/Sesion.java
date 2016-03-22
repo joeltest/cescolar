@@ -49,9 +49,11 @@ public class Sesion implements Serializable {
     }
 
     public void login(ActionEvent event) {
+        System.out.println("Login action");
         this.docente = null;
         this.alumno = null;
         this.usuarioSesion = null;
+        enSesion=false;
 
         if (this.tipoLogin != -1) {
             System.out.println("Login " + usuarioTemp + " " + claveTemp);
@@ -84,7 +86,7 @@ public class Sesion implements Serializable {
                     if (alumno == null) {
                         MensajeUtils.addErrorMessage("Acceso denegado", " su usuario o clave de alumno son incorrectos...");
                     } else {
-                        System.out.println(" alumno " + docente.getNombre());
+                        System.out.println(" alumno " + alumno.getNombre());
                         MensajeUtils.addInfoMessage("Bienvenido", "...");
                         enSesion = true;
                     }

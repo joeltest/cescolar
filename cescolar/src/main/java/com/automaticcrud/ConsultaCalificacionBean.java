@@ -50,7 +50,7 @@ import javax.faces.model.SelectItem;
  */
 @ManagedBean
 @SessionScoped
-public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
+public class ConsultaCalificacionBean  {
 
     @ManagedProperty(value = "#{sesion}")
     private Sesion sesion;
@@ -79,9 +79,8 @@ public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
     private MateriaFacadeLocal materiaService;
 
     @EJB
-    private DocenteFacadeLocal docenteService;
-    @EJB
     private AsignacionMateriaAlumnoFacadeLocal asignacionMateriaAlumnoService;
+   
     @EJB
     private CalificacionFacadeLocal calificacionService;
 
@@ -105,15 +104,14 @@ public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
 
     private int idMateriaSeleccionado;
     private int idGrupoSeleccionado;
-    private int idGradoSeleccionado;
-    private int idTurnoSeleccionado;
+//    private int idGradoSeleccionado;
+//    private int idTurnoSeleccionado;
     private int idCursoSeleccionado;
 
     private int unidad;
     private BigDecimal calificacionBigDecimal;
 
-    public CapturaCalificacionBean() {
-        super(Calificacion.class);
+    public ConsultaCalificacionBean() {
     }
 
     @PostConstruct
@@ -122,89 +120,34 @@ public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
     }
 
     public void inicializar() {
-        try {
-            preprarNuevoRegistro();
-            cargarListaMateriasPorGrado();
-            idMateriaSeleccionado = -1;
-            setIdGrupoSeleccionado(-1);
-            setIdGradoSeleccionado(-1);
-            setIdTurnoSeleccionado(-1);
+//            cargarListaMateriasPorGrado();
+//            idMateriaSeleccionado = -1;
             setIdCursoSeleccionado(-1);
-            llenarTurnoItem();
-            llenarGradoItem();
+//            llenarTurnoItem();
+//            llenarGradoItem();
 
             llenarCursoItem();
-            llenarGrupoItem();
-            llenarMateriasItem();
-        } catch (InstantiationException ex) {
-            Logger.getLogger(CapturaCalificacionBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(CapturaCalificacionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//            llenarGrupoItem();
+//            llenarMateriasItem();
 
     }
 
-    public void prepararNuevaCalificacion(ActionEvent ev) {
-        try {
-            int idAsignacion = Integer.parseInt(FacesUtils.getRequestParameter("idAsignacion"));
-            this.asignacionSeleccionada = asignacionMateriaAlumnoService.find(idAsignacion);
+    public void buscarCardex(ActionEvent e) {
+        System.out.println("Buscar cardez");
+        
+       this.inscripcionAlumno = 
+        inscripcionService.buscarInscripcionAlumno(sesion.getAlumno().getId(),idCursoSeleccionado);
 
-            System.out.println("idAsignacion ========" + idAsignacion);
-            llenarUnidades();
-            this.setCalificacionBigDecimal(new BigDecimal(BigInteger.ZERO));
-            preprarNuevoRegistro();
-        } catch (InstantiationException ex) {
-            Logger.getLogger(CapturaCalificacionBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(CapturaCalificacionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       this.listaAsignacioMateriaAlumno = asignacionMateriaAlumnoService.findAllPorInscripcionAlumno(inscripcionAlumno.getId());
+       
     }
 
-    private void llenarUnidades() {
-        if (this.listaUnidadesItems == null) {
-            this.listaUnidadesItems = new ArrayList<>();
-            for (int i = 1; i < 5; i++) {
-                listaUnidadesItems.add(new SelectItem(i, String.valueOf(i)));
-            }
-        }
-    }
-
-
-    public void cargarLista(ActionEvent event) {
-        System.out.println("Buscar por seleccion");
-
-        this.listaAsignacioMateriaAlumno
-                = asignacionMateriaAlumnoService.findAllPorInscripcionAlumno(idMateriaSeleccionado,
-                        idCursoSeleccionado,
-                        idGradoSeleccionado,
-                        idGrupoSeleccionado,
-                        idTurnoSeleccionado);
-    }
 
     public List<Calificacion> getCalificacionPorMateria(int idAsignacionMateriAlumno) {
         return calificacionService.listaCalificacionPorAsignacion(idAsignacionMateriAlumno);
 
     }
 
-    public void cargarListaMateriasPorGrado() {
-
-        listaMateria = materiaService.findAllByDocente(sesion.getDocente().getId());
-
-    }
-
-    public void eliminarInscripcion(ActionEvent e) {
-
-        getSelected().setEliminado("True");
-
-        servicio.edit(getSelected());
-    }
-
-    public void valueChangeGrado(ValueChangeEvent change) {
-
-//        setIdGrado((int) (Integer) (change.getNewValue()));
-        cargarListaMateriasPorGrado();
-
-    }
 
     public void llenarMateriasItem() {
 
@@ -319,15 +262,8 @@ public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
       //cargar listas de materas
       this.listaAsignacioMateriaAlumno = asignacionMateriaAlumnoService.findAllPorInscripcionAlumno(inscripcionAlumno.getId());
       
-      
     }
     
-    
-    @Override
-    protected FacadeLocal<Calificacion> getService() {
-        return servicio;
-    }
-
     public CalificacionFacadeLocal getServicio() {
         return servicio;
     }
@@ -436,21 +372,6 @@ public class CapturaCalificacionBean extends BaseCrud<Calificacion> {
         this.idGrupoSeleccionado = idGrupoSeleccionado;
     }
 
-    public int getIdGradoSeleccionado() {
-        return idGradoSeleccionado;
-    }
-
-    public void setIdGradoSeleccionado(int idGradoSeleccionado) {
-        this.idGradoSeleccionado = idGradoSeleccionado;
-    }
-
-    public int getIdTurnoSeleccionado() {
-        return idTurnoSeleccionado;
-    }
-
-    public void setIdTurnoSeleccionado(int idTurnoSeleccionado) {
-        this.idTurnoSeleccionado = idTurnoSeleccionado;
-    }
 
     public int getIdCursoSeleccionado() {
         return idCursoSeleccionado;

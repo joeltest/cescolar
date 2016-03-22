@@ -16,7 +16,7 @@
 
             </ui:define>
             <ui:define name="sidebar">
-                <ui:include src="../menuLateral_docente.xhtml"/>
+                <ui:include src="../menuLateral_alumno.xhtml"/>
             </ui:define>
             <ui:define name="content">
                 <p:messages />
@@ -24,95 +24,110 @@
                     <h:panelGrid columns="3">
                         <h:outputLabel value="Curso :"/>                        
                         <p:selectOneMenu                              
-                            value="#{capturaCalificacionBean.idCursoSeleccionado}"
+                            value="#{consultaCalificacionBean.idCursoSeleccionado}"
                             >
                             <p:ajax update="@this"
                                     process="@this"
                                     />
                             <f:validator validatorId="combo.requerido"/>
                             <f:selectItem itemLabel="Seleccione..." itemValue="-1"/>
-                            <f:selectItems value="#{capturaCalificacionBean.listaCursoItems}"
+                            <f:selectItems value="#{consultaCalificacionBean.listaCursoItems}"
                                            />
                         </p:selectOneMenu>
 
                         <p:commandLink value="Buscar..."
                                        styleClass="btn btn-primary btn-lg"
-                                       actionListener="#{capturaCalificacionBean.buscarCardex(e)}"
-                                       update="datatableCardex"
+                                       actionListener="#{consultaCalificacionBean.buscarCardex(e)}"
+                                       update="datatableCardex,inscripcionAlumno"
                                        />
 
                     </h:panelGrid>
-                    <h:panelGrid columns="4" rendered="#{not empty capturaCalificacionBean.inscripcionAlumno}">
+                    <h:panelGrid id="inscripcionAlumno" columns="4" >
                         <h:outputLabel value="Numero de control :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.numeroControl}" styleClass="bg-primary"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.numeroControl}" styleClass="bg-primary"/>
                         <h:outputLabel value="Nombre :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.nombre}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.nombre}"/>
                         <h:outputLabel value="Apellido paterno :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.apellidoPaterno}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.apellidoPaterno}"/>
                         <h:outputLabel value="Apellido materno :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.apellidoMaterno}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.apellidoMaterno}"/>
                         <h:outputLabel value="Fecha Nac.:"/>
                         <h:panelGrid columns="3">
-                            <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.diaNacimiento}/"/>
-                            <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.mesNacimiento}/"/>
-                            <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.anoNacimiento}"/>
+                            <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.diaNacimiento}/"/>
+                            <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.mesNacimiento}/"/>
+                            <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.anoNacimiento}"/>
 
                         </h:panelGrid>
                         <h:outputLabel value="Semestre actual :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.semestreActual}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.semestreActual}"/>
                         <h:outputLabel value="Ciudad :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.ciudad}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.ciudad}"/>
                         <h:outputLabel value="Estado :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.estado}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.estado}"/>
                         <h:outputLabel value="Colonia :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.colonia}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.colonia}"/>
                         <h:outputLabel value="Calle :"/>
-                        <h:outputText value="#{capturaCalificacionBean.inscripcionAlumno.idAlumno.calle}"/>
+                        <h:outputText value="#{consultaCalificacionBean.inscripcionAlumno.idAlumno.calle}"/>
                     </h:panelGrid>   
 
 
                     <br/>
-                    <p:commandButton value="Imprimir" 
-                                     type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
-                        <p:printer target="datatable" />
-                    </p:commandButton>
+                    <div class="row pull-right">
+                        <p:commandButton value="Imprimir" 
+                                         styleClass="btn btn-success btn-lg"
+                                         type="button">
+                            <i class="fa fa-print"></i>
+                            <p:printer target="datatableCardex" />
+                        </p:commandButton>
+                    </div>
+                    <div class="row pull-right">
+                        <p:dataTable id="datatableCardex"
+                                     value="#{consultaCalificacionBean.listaAsignacioMateriaAlumno}"
+                                     var="item"
 
-                    <p:dataTable id="datatableCardex"
-                                 value="#{capturaCalificacionBean.listaAsignacioMateriaAlumno}"
-                                 var="item"
-                                 >
-                        <p:column headerText="No." width="50">                             
+                                     >
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    Excel
+                                    <!-- <p:graphicImage name="/demo/images/excel.png" width="24"/>-->
+                                    <p:dataExporter type="xls" target="datatableCardex" fileName="cars" />
+                                </h:commandLink>
 
-                        </p:column>
-                        <p:column headerText="No. control" width="200">                             
-                            <p:outputLabel value="#{item.idMateria.nombre}" 
-                                           />
+                                <h:commandLink>
+                                    Pdf
+                                    <!--<p:graphicImage name="/demo/images/pdf.png" width="24"/>-->
+                                    <p:dataExporter type="pdf" target="datatableCardex" fileName="cars"/>
+                                </h:commandLink>
+                            </f:facet>
 
-                        </p:column>
-                        <p:column headerText="No. control" width="200">                             
-                            <p:outputLabel value="#{item.idMateria.idDocente.nombre} #{item.idMateria.idDocente.apellidos}" 
-                                           />
+                            <p:column headerText="No." width="50">                             
 
-                        </p:column>
-                        <p:column headerText="Unidades">
-                            <p:dataTable id="datatableCalificacion"
-                                         value="#{capturaCalificacionBean.getCalificacionPorMateria(item.id)}"
-                                         var="data"
-                                         >
-                                <p:column headerText="Unidad">                             
-                                    <h:outputText value="#{data.unidad}"/>
-                                </p:column>
-                                <p:column headerText="Calificación">                             
-                                    <h:outputText value="#{data.calificacion}"/>
-                                </p:column>
-                                <p:column >                             
-                                    <p:commandLink value="Quitar"
-                                                   styleClass="text-red"
-                                                   /> 
-                                </p:column>
-                            </p:dataTable>
-                        </p:column>
-                    </p:dataTable>
+                            </p:column>
+                            <p:column headerText="Materia" width="200">                             
+                                <p:outputLabel value="#{item.idMateria.nombre}" 
+                                               />
+
+                            </p:column>
+                            <p:column headerText="Docente" width="250">                             
+                                <p:outputLabel value="#{item.idMateria.idDocente.nombre} #{item.idMateria.idDocente.apellidos}" 
+                                               />
+
+                            </p:column>
+                            <p:column headerText="Unidades">
+                                <p:dataTable id="datatableCalificacion"
+                                             value="#{consultaCalificacionBean.getCalificacionPorMateria(item.id)}"
+                                             var="data"
+                                             >
+                                    <p:column>                             
+                                        <h:outputText value="Unidad #{data.unidad}"/>
+                                    </p:column>
+                                    <p:column>                             
+                                        <h:outputText value="#{data.calificacion}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
                 </h:form>
 
 

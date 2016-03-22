@@ -57,25 +57,28 @@ public class AsignacionMateriaAlumnoFacade extends AbstractFacade<AsignacionMate
     }
 
     @Override
-    public AsignacionMateriaAlumno findByInscripcionAlumno(int idAlumno, int idMateria, int idCurso, int idGrado, int idGrupo, int idTurno) {
-
+    public AsignacionMateriaAlumno findByInscripcionAlumno(int idAlumno, int idCurso) {
+        AsignacionMateriaAlumno a =null;
         try {
-            AsignacionMateriaAlumno a = (AsignacionMateriaAlumno) em.createQuery("SELECT i FROM AsignacionMateriaAlumno i "
-                    + " WHERE i.idMateria.id = :idMateria "
-                    + " AND i.idIncripcionAlumno.idCurso.id =:idCurso "
-                    + " AND i.idIncripcionAlumno.idGrado.id = :idGrado "
-                    + " AND i.idIncripcionAlumno.idGrupo.id = :idGrupo "
-                    + " AND i.idIncripcionAlumno.idTurno.id = :idTurno "
+            List<AsignacionMateriaAlumno> lista = em.createQuery("SELECT i FROM AsignacionMateriaAlumno i "
+                    + " WHERE "
+                    + "  i.idIncripcionAlumno.idCurso.id =:idCurso "
+                    //                    + " AND i.idIncripcionAlumno.idGrado.id = :idGrado "
+                    //                    + " AND i.idIncripcionAlumno.idGrupo.id = :idGrupo "
+                    //                    + " AND i.idIncripcionAlumno.idTurno.id = :idTurno "
                     + " AND i.idIncripcionAlumno.idAlumno.id = :idAlumno "
                     + " AND i.eliminado = 'False'"
                     + " ORDER BY i.idIncripcionAlumno.idAlumno.nombre ASC")
-                    .setParameter("idMateria", idMateria)
+                    //                    .setParameter("idMateria", idMateria)
                     .setParameter("idCurso", idCurso)
-                    .setParameter("idGrado", idGrado)
-                    .setParameter("idGrupo", idGrupo)
-                    .setParameter("idTurno", idTurno)
+                    //                    .setParameter("idGrado", idGrado)
+                    //                    .setParameter("idGrupo", idGrupo)
+                    //                    .setParameter("idTurno", idTurno)
                     .setParameter("idAlumno", idAlumno)
-                    .getSingleResult();
+                    .getResultList();
+            if (lista != null) {
+               a= lista.get(0);
+            }
             return a;
         } catch (NoResultException e) {
             return null;

@@ -32,6 +32,7 @@ public class AlumnoFacade extends AbstractFacade<Alumno> implements AlumnoFacade
 
     @Override
     public Alumno login(String numeroControl, String clave) {
+        System.out.println("Login de alumno en servicio ");
         Alumno al = null;
         try{
          al = (Alumno) em.createQuery("SELECT a FROM Alumno a WHERE a.numeroControl ='"+numeroControl+"' AND a.clave = '"+clave+"' AND a.eliminado = 'False'")

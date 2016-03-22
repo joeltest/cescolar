@@ -21,7 +21,7 @@ public interface AsignacionMateriaAlumnoFacadeLocal extends FacadeLocal<Asignaci
     
     List<AsignacionMateriaAlumno> findAllPorInscripcionAlumno(int idMateria,int idCurso,int idGrado,int idGrupo, int idTurno);
     
-    AsignacionMateriaAlumno findByInscripcionAlumno(int idAlumno,int idMateria,int idCurso,int idGrado,int idGrupo, int idTurno);
+    AsignacionMateriaAlumno findByInscripcionAlumno(int idAlumno,int idCurso);
 
     
 }
